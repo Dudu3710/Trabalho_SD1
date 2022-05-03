@@ -3,6 +3,17 @@
 
 __BEGIN_API
 
+CPU::Context::Context()
+{   
+    //adicionar implementacao
+}
+
+template<typename ... Tn>
+CPU::Context::Context(void (* func)(Tn ...), Tn ... an)
+{
+    //adicionar implementacao
+}
+
 void CPU::Context::save()
 {
     //adicionar implementação
