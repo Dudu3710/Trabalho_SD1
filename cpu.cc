@@ -30,7 +30,7 @@ CPU::Context::Context(void (* func)(Tn ...), Tn ... an)
     _context.uc_stack.ss_sp = malloc(STACK_SIZE);
     _context.uc_stack.ss_size = STACK_SIZE;
     _context.uc_stack.ss_flags = 0;
-    makecontext(&_context, (void*)&func, an...);
+    makecontext(&_context, func, (int)sizeof...(an), an...);
 }
 
 void CPU::Context::save()
