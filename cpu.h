@@ -4,8 +4,6 @@
 #include <ucontext.h>
 #include <iostream>
 #include "traits.h"
-// COLOCADO POR MIM 
-//#include "main_class.h"
 
 __BEGIN_API
 
@@ -28,7 +26,7 @@ class CPU
             void save();
             void load();
 
-        private:            
+        private:
             char *_stack;
         public:
             ucontext_t _context;
@@ -43,4 +41,3 @@ class CPU
 __END_API
 
 #endif
-
