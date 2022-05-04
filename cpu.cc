@@ -3,9 +3,13 @@
 
 __BEGIN_API
 
-CPU::Context::Context()
+/*CPU::Context::Context()
 {   
-    getcontext(&_context);
+    if (getcontext(&_context) == 0) {
+        printf("ok");
+    } else {
+        printf("problemao");
+    };
     //adicionar implementacao
     //_context.uc_link = 0;
     //_context.uc_stack.ss_sp = malloc(STACK_SIZE);
@@ -13,7 +17,7 @@ CPU::Context::Context()
     //_context.uc_stack.ss_size = STACK_SIZE;
     //_context.uc_stack.ss_flags = 0;
     //makecontext(&_context,(void*)&Main,0); make context??
-}
+}*/
 
 template<typename ... Tn>
 CPU::Context::Context(void (* func)(Tn ...), Tn ... an)
@@ -21,12 +25,12 @@ CPU::Context::Context(void (* func)(Tn ...), Tn ... an)
     //adicionar implementacao
     //_context.save();
     getcontext(&_context);
-    _stack = malloc(STACK_SIZE)
+    _stack = malloc(STACK_SIZE);
     _context.uc_link = 0;
     _context.uc_stack.ss_sp = malloc(STACK_SIZE);
     _context.uc_stack.ss_size = STACK_SIZE;
     _context.uc_stack.ss_flags = 0;
-    makecontext(&_context, (void*)&func, an)
+    makecontext(&_context, (void*)&func, an...);
 }
 
 void CPU::Context::save()
