@@ -5,12 +5,13 @@ __BEGIN_API
 
 CPU::Context::Context()
 {   
+    getcontext(&_context);
     //adicionar implementacao
-    Context::load();
-    _context.uc_link = 0;
-    _context.uc_stack.ss_sp = malloc(STACK_SIZE);
-    _context.uc_stack.ss_size = STACK_SIZE;
-    _context.uc_stack.ss_flags = 0;
+    //_context.uc_link = 0;
+    //_context.uc_stack.ss_sp = malloc(STACK_SIZE);
+    //_stack = ??
+    //_context.uc_stack.ss_size = STACK_SIZE;
+    //_context.uc_stack.ss_flags = 0;
     //makecontext(&_context,(void*)&Main,0); make context??
 }
 
@@ -18,25 +19,27 @@ template<typename ... Tn>
 CPU::Context::Context(void (* func)(Tn ...), Tn ... an)
 {
     //adicionar implementacao
-    Context::load();
+    //_context.save();
+    getcontext(&_context);
+    _stack = malloc(STACK_SIZE)
     _context.uc_link = 0;
-    _context.uc_stack.ss_sp=malloc(STACK_SIZE);
-    _context.uc_stack.ss_size=STACK_SIZE;
-    _context.uc_stack.ss_flags=0;
+    _context.uc_stack.ss_sp = malloc(STACK_SIZE);
+    _context.uc_stack.ss_size = STACK_SIZE;
+    _context.uc_stack.ss_flags = 0;
     makecontext(&_context, (void*)&func, an)
 }
 
 void CPU::Context::save()
 {
     //adicionar implementação
-    setcontext(&_context);
+    getcontext(&_context);
 
 }
 
 void CPU::Context::load()
 {
     //adicionar implementação
-    getcontext(&_context);
+    setcontext(&_context);
 }
 
 CPU::Context::~Context()
