@@ -4,6 +4,8 @@
 #include <ucontext.h>
 #include <iostream>
 #include "traits.h"
+// COLOCADO POR MIM 
+//#include "main_class.h"
 
 __BEGIN_API
 
