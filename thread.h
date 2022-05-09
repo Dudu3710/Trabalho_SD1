@@ -61,6 +61,12 @@ private:
      */ 
 };
 
+
+template<typename ... Tn>
+Thread::Thread(void (* entry)(Tn ...), Tn ... an){
+    // implementar
+}
+
 __END_API
 
 #endif
