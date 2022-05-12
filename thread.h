@@ -47,9 +47,11 @@ public:
      */ 
     int id();
 
+
     /*
      * Qualquer outro método que você achar necessário para a solução.
      */ 
+    Context* context();
 
 private:
     int _id;
@@ -64,8 +66,10 @@ private:
 
 template<typename ... Tn>
 Thread::Thread(void (* entry)(Tn ...), Tn ... an){
-    // implementar
+    _context = new CPU::Context(entry,(char*) an...);
+    _id = 0;
 }
+
 
 __END_API
 

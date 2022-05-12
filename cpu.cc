@@ -21,10 +21,10 @@ CPU::Context::~Context()
     free(_context.uc_stack.ss_sp);
 }
 
-void CPU::switch_context(Context *from, Context *to)
+int CPU::switch_context(Context *from, Context *to)
 {
     //implementação do método
-    swapcontext(&from->_context, &to->_context);
+    return swapcontext(&from->_context, &to->_context);
 }
 
 __END_API

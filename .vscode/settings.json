@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "iostream": "cpp"
+        "*.pl": "prolog",
+        "iostream": "cpp",
+        "string_view": "cpp"
     }
 }

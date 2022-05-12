@@ -34,10 +34,6 @@ static const bool info = false;
 static const bool trace = true;
 };
 
-template<typename T>
-struct Traits {
-static const bool debugged = false;
-};
 template<> struct Traits<System> : public Traits<void>
 {
 static const bool debugged = true;
