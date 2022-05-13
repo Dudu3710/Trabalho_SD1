@@ -5,8 +5,10 @@ __BEGIN_API
 
 Thread* Thread::_running = nullptr;
 
-int Thread::switch_context(Thread * prev, Thread * next) 
-{       
+unsigned int Thread::id_counter = 0;
+
+int Thread::switch_context(Thread * prev, Thread * next)
+{
     if (CPU::switch_context(prev->context(),next->context()) == -1) {
         return -1;
     }
@@ -14,7 +16,7 @@ int Thread::switch_context(Thread * prev, Thread * next)
     return 0;
 }
 
-void Thread::thread_exit (int exit_code) 
+void Thread::thread_exit (int exit_code)
 {
     delete context();
 }
@@ -28,7 +30,5 @@ CPU::Context* Thread::context()
 {
     return _context;
 }
-
-
 
 __END_API

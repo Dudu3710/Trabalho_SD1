@@ -18,7 +18,7 @@ void CPU::Context::load()
 CPU::Context::~Context()
 {
     //adicionar implementação
-    free(_context.uc_stack.ss_sp);
+    delete _stack;
 }
 
 int CPU::switch_context(Context *from, Context *to)
