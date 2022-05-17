@@ -19,7 +19,7 @@ public:
     static void init();
 
     /* Realiza a criação da Thread Main. */
-    void System::init(void (* main)(void *));
+    static void init(void (* main)(void *));
 };
 
 

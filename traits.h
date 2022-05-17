@@ -20,9 +20,10 @@ template<typename T>
 struct Traits {
 };
 
-template<> struct Traits<CPU>
+template<> struct Traits<CPU> : public Traits<void>
 {
     static const unsigned int STACK_SIZE = 1024*64; // 64 kB
+    static const bool debugged = true;
 };
 
 template<> struct Traits<Debug>: public Traits<void>
@@ -34,11 +35,6 @@ template<> struct Traits<Debug>: public Traits<void>
 };
 
 template<> struct Traits<System> : public Traits<void>
-{
-    static const bool debugged = true;
-};
-
-template<> struct Traits<CPU> : public Traits<void>
 {
     static const bool debugged = true;
 };

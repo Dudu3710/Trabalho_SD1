@@ -113,8 +113,9 @@ private:
 
 /* TODO: inicialização de _link */
 template<typename ... Tn>
-Thread::Thread(void (* entry)(Tn ...), Tn ... an){
-    _context = new CPU::Context(entry,(char*) an...);
+inline Thread::Thread(void (* entry)(Tn ...), Tn ... an){
+    db<Thread>(TRC) << "Thread " << _thread_count << " created.\n";
+    _context = new CPU::Context(entry, (char *) an ...);
     _id = Thread::_thread_count++;
 }
 
