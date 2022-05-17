@@ -15,9 +15,11 @@ public:
      * setvbuf (stdout, 0, _IONBF, 0) ;
      * Isso evita condições de corrida que podem ocorrer no buffer quando threads são usadas.
      * Deve ser chamado no início da função main.
-     */ 
+     */
     static void init();
 
+    /* Realiza a criação da Thread Main. */
+    void System::init(void (* main)(void *));
 };
 
 

@@ -108,14 +108,14 @@ private:
     /*
      * Qualquer outro atributo que você achar necessário para a solução.
      */
-    static unsigned int id_counter;
+    static unsigned int _thread_count;
 };
 
 /* TODO: inicialização de _link */
 template<typename ... Tn>
 Thread::Thread(void (* entry)(Tn ...), Tn ... an){
     _context = new CPU::Context(entry,(char*) an...);
-    _id = id_counter++;
+    _id = Thread::_thread_count++;
 }
 
 __END_API
