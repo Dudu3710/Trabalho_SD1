@@ -91,7 +91,7 @@ public:
     /*
      * Qualquer outro método que você achar necessário para a solução.
      */
-    Context* context();
+    Context * context();
 
 private:
     unsigned int _id;
@@ -111,13 +111,14 @@ private:
     static unsigned int _thread_count;
 };
 
-/* TODO: inicialização de _link */
 template<typename ... Tn>
 inline Thread::Thread(void (* entry)(Tn ...), Tn ... an){
     db<Thread>(TRC) << "Thread " << _thread_count << " created.\n";
     _context = new CPU::Context(entry, an ...);
     _id = Thread::_thread_count++;
-    // TODO: inserir _link na fila
+    _link(this, (std::chrono::duration_cast<std::chrono::microseconds>
+        (std::chrono::high_resolution_clock::now().time_since_epoch()).count()));
+    _ready.insert(&_link);
     _state = READY;
 }
 

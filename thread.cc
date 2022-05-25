@@ -3,62 +3,111 @@
 
 __BEGIN_API
 
-Thread* Thread::_running = nullptr;
+Thread * Thread::_running = nullptr;
 unsigned int Thread::_thread_count = 0;
-Ready_Queue Thread::_ready = new Ordered_List<Thread>();
+Ready_Queue Thread::_ready = new ReadyQueue();
 
-int Thread::switch_context(Thread * prev, Thread * next)
-{
-    db<Thread>(TRC) << "Switching context from Thread " << prev->id() <<
-                        " to Thread " << next->id() << ".\n";
-    prev->_state = READY;
-    _running = next;
-    next->_state = RUNNING;
+int Thread::switch_context(Thread * prev, Thread * next) {
+    db<Thread>(TRC) << "Switching context from thread " << prev->id() <<
+                        " to thread " << next->id() << ".\n";
+    Thread::_running = next;
     CPU::switch_context(prev->context(), next->context());
     return 0;
 }
 
-void Thread::thread_exit(int exit_code)
-{
+void Thread::thread_exit(int exit_code) {
     db<Thread>(TRC) << "Thread::thread_exit(exit_code=" << exit_code << ")\n";
     _state = FINISHING;
     delete context();
     Thread::_thread_count--;
 }
 
-int Thread::id()
-{
+int Thread::id() {
     return _id;
 }
 
 void Thread::dispatcher() {
-    // TODO: imprimir informação usando o debug em nível TRC
-    // db<Thread>(TRC) << "TODO...";
+    db<Thread>(TRC) << "Thread dispatcher is scheduling threads...\n";
+    // Enquanto existir thread do usuário
+    while (Thread::_thread_count > 0) {
+        // Escolhe uma próxima thread a ser executada
+        Thread * next = Thread::_ready.remove();
+        /* Atualiza o status da própria thread dispatcher
+           para READY e reinsire a mesma em _ready */
+        Thread::_dispatcher._state = READY;
+        Thread::_ready.insert(&Thread::_dispatcher._link);
+        /* Atualiza o ponteiro _running para apontar
+           para a próxima thread a ser executada */
+        Thread * prev = Thread::_running;
+        Thread::_running = next;
+        // Atualiza o estado da próxima thread a ser executada
+        next->_state = RUNNING;
+        // Troca o contexto entre as duas threads
+        Thread::switch_context(prev, next);
+        /* Testa se o estado da próxima thread é FINISHING
+           e caso afirmativo a remove de _ready */
+        if (next->state == FINISHING)
+            Thread::_ready.remove(next);
+    }
+    // Muda o estado da thread dispatcher para FINISHING
+    Thread::_dispatcher.state = FINISHING;
+    // Remove a thread dispatcher da fila de prontos
+    Thread::_ready.remove(&Thread::_dispatcher);
+    // Troca o contexto da thread dispatcher para main
+    Thread::switch_context(&Thread::_dispatcher, &Thread::_main);
 }
 
 void Thread::init(void (* main)(void *)) {
-    db<Thread>(TRC) << "Initializing Threads main and dispatcher.\n";
+    db<Thread>(TRC) << "Initializing threads main and dispatcher.\n";
     // Cria a Thread main.
     _main = new Thread(main);
     _main_context = _main->context();
     // Cria a Thread dispatcher.
-    _dispatcher = new Thread();
+    _dispatcher = new Thread(&Thread::dispatcher);
     // Troca o contexto para a Thread main.
     _main_context->load();
 }
 
 void Thread::yield() {
-    // TODO: imprimir informação usando o debug em nível TRC
-    // db<Thread>(TRC) << "TODO...";
+    db<Thread>(TRC) << "Thread " << Thread::_running->id() << " is yielding...\n";
+    // Escolhe uma próxima thread a ser executada
+    Thread * next = Thread::_ready.remove();
+    /* Atualiza a prioridade da tarefa que estava
+       sendo executada (aquela que chamou yield) com o
+       timestamp atual, a fim de reinserí-la na fila de
+       prontos atualizada (cuide de casos especiais, como
+       estado ser FINISHING ou Thread main que não devem
+       ter suas prioridades alteradas) */
+    Thread * prev = Thread::_running;
+    if (prev != Thread::_main && prev->_state != FINISHING)
+        prev->_link.rank(std::chrono::duration_cast<std::chrono::microseconds>
+            (std::chrono::high_resolution_clock::now().time_since_epoch()).count());
+    // Reinsire a thread que estava executando na fila de prontos
+    Thread::_ready.insert(&prev._link);
+    // Atualiza o ponteiro _running
+    Thread::_running = next;
+    // Atualiza o estado da próxima thread a ser executada
+    next->_state = RUNNING;
+    // Troca o contexto entre as threads
+    Thread::switch_context(prev, next);
 }
 
 Thread::~Thread() {
-    // TODO: imprimir informação usando o debug em nível TRC
-    // db<Thread>(TRC) << "TODO...";
+    db<Thread>(TRC) << "Thread " << Thread::_running->id() << " destroyed.\n";
+    delete _context;
+    delete _link;
+    if (this == Thread::_dispatcher) {
+        Thread::_dispatcher = 0;
+        delete Thread::_ready;
+    }
+    if (this == Thread::_main) {
+        Thread::_main = 0;
+        Thread::_main_context = 0;
+        Thread::_running = 0;
+    }
 }
 
-CPU::Context* Thread::context()
-{
+CPU::Context * Thread::context() {
     return _context;
 }
 
