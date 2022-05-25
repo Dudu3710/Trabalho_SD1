@@ -115,8 +115,10 @@ private:
 template<typename ... Tn>
 inline Thread::Thread(void (* entry)(Tn ...), Tn ... an){
     db<Thread>(TRC) << "Thread " << _thread_count << " created.\n";
-    _context = new CPU::Context(entry, (char *) an ...);
+    _context = new CPU::Context(entry, an ...);
     _id = Thread::_thread_count++;
+    // TODO: inserir _link na fila
+    _state = READY;
 }
 
 __END_API

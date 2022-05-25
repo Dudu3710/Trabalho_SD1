@@ -38,8 +38,7 @@ class CPU
 };
 
 template<typename ... Tn>
-CPU::Context::Context(void (* func)(Tn ...), Tn ... an)
-{
+inline CPU::Context::Context(void (* func)(Tn ...), Tn ... an) {
     getcontext(&_context);
     _stack = new char[STACK_SIZE];
     _context.uc_link = 0;

@@ -11,7 +11,9 @@ int Thread::switch_context(Thread * prev, Thread * next)
 {
     db<Thread>(TRC) << "Switching context from Thread " << prev->id() <<
                         " to Thread " << next->id() << ".\n";
+    prev->_state = READY;
     _running = next;
+    next->_state = RUNNING;
     CPU::switch_context(prev->context(), next->context());
     return 0;
 }
@@ -19,6 +21,7 @@ int Thread::switch_context(Thread * prev, Thread * next)
 void Thread::thread_exit(int exit_code)
 {
     db<Thread>(TRC) << "Thread::thread_exit(exit_code=" << exit_code << ")\n";
+    _state = FINISHING;
     delete context();
     Thread::_thread_count--;
 }
@@ -33,7 +36,7 @@ void Thread::dispatcher() {
     // db<Thread>(TRC) << "TODO...";
 }
 
-void Thread::init(void (*main)(void *)) {
+void Thread::init(void (* main)(void *)) {
     db<Thread>(TRC) << "Initializing Threads main and dispatcher.\n";
     // Cria a Thread main.
     _main = new Thread(main);
