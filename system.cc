@@ -1,4 +1,5 @@
 #include "system.h"
+#include "thread.h"
 #include <iostream>
 
 __BEGIN_API

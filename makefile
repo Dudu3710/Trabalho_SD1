@@ -1,13 +1,16 @@
+CC := g++
+
 all: main
 
-main.o: main.cc thread.h system.h main_class.h
-main_class.o: main_class.cc main_class.h
-cpu.o: cpu.cc cpu.h
-debug.o: debug.cc debug.h
-system.o: system.cc system.h
-thread.o: thread.cc thread.h
+main.o: main.cc
+main_class.o: main_class.cc
+cpu.o: cpu.cc
+debug.o: debug.cc
+system.o: system.cc
+thread.o: thread.cc
+	$(CC) -c $^
 
-$(EXEC_FILE): main.o main_class.o cpu.o debug.o system.o thread.o
+main: main.o main_class.o cpu.o debug.o system.o thread.o
 	$(CC) $^ -o $@
 
 clean:

@@ -112,12 +112,13 @@ private:
 };
 
 template<typename ... Tn>
-inline Thread::Thread(void (* entry)(Tn ...), Tn ... an){
+inline Thread::Thread(void (* entry)(Tn ...), Tn ... an)
+: _link(this, (std::chrono::duration_cast<std::chrono::microseconds>
+    (std::chrono::high_resolution_clock::now().time_since_epoch()).count()))
+{
     db<Thread>(TRC) << "Thread " << _thread_count << " created.\n";
     _context = new CPU::Context(entry, an ...);
     _id = Thread::_thread_count++;
-    _link(this, (std::chrono::duration_cast<std::chrono::microseconds>
-        (std::chrono::high_resolution_clock::now().time_since_epoch()).count()));
     _ready.insert(&_link);
     _state = READY;
 }
