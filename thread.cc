@@ -68,6 +68,7 @@ void Thread::init(void (* main)(void *)) {
     // Cria a Thread dispatcher.
     Thread::_dispatcher = *(new Thread(Thread::dispatcher));
     // Troca o contexto para a Thread main.
+    Thread::_running = &Thread::_main;
     Thread::_main_context.load();
 }
 
