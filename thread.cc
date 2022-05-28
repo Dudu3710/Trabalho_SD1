@@ -52,16 +52,13 @@ void Thread::dispatcher() {
            e caso afirmativo a remove de _ready */
         if (next->_state == FINISHING)
             Thread::_ready.remove(next);
-        db<Thread>(TRC) << "Thread_count: " << Thread::_thread_count << "\n";
     }
     // Muda o estado da thread dispatcher para FINISHING
     Thread::_dispatcher._state = FINISHING;
     // Remove a thread dispatcher da fila de prontos
     Thread::_ready.remove(&Thread::_dispatcher);
     // Troca o contexto da thread dispatcher para main
-    db<Thread>(TRC) << "Antes do switch_context do Dispatcher para Main\n";
     Thread::switch_context(&Thread::_dispatcher, &Thread::_main);
-    db<Thread>(TRC) << "Depois do switch_context do Dispatcher para Main\n";
 }
 
 void Thread::init(void (* main)(void *)) {
@@ -104,10 +101,6 @@ void Thread::yield() {
 
 Thread::~Thread() {
     db<Thread>(TRC) << "Thread " << Thread::_running->id() << " destroyed.\n";
-    // if (this == &Thread::_main) {
-    //     delete &Thread::_main_context;
-        //Thread::_running = nullptr;
-    // }
 }
 
 CPU::Context * Thread::context() {

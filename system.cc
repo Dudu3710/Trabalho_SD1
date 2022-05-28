@@ -6,10 +6,12 @@ __BEGIN_API
 
 void System::init()
 {
-    setvbuf (stdout, 0, _IONBF, 0);
+    db<System>(TRC) << "System executes setvbuf(stdout, 0, _IONBF, 0)\n";
+    setvbuf(stdout, 0, _IONBF, 0);
 }
 
 void System::init(void (* main)(void *)) {
+    db<System>(TRC) << "System is calling Thread::init(main)\n";
     Thread::init(main);
 }
 
