@@ -8,7 +8,7 @@ unsigned int Thread::_thread_count = 0;
 Thread Thread::_main;
 CPU::Context Thread::_main_context;
 Thread Thread::_dispatcher;
-Thread::Ready_Queue Thread::_ready = *(new Thread::Ready_Queue());
+Thread::Ready_Queue Thread::_ready;
 
 int Thread::switch_context(Thread * prev, Thread * next) {
     db<Thread>(TRC) << "Switching context from thread " << prev->id() <<
@@ -21,7 +21,6 @@ int Thread::switch_context(Thread * prev, Thread * next) {
 void Thread::thread_exit(int exit_code) {
     db<Thread>(TRC) << "Thread::thread_exit(exit_code=" << exit_code << ")\n";
     _state = FINISHING;
-    delete context();
     Thread::_thread_count--;
     Thread::yield();
 }
@@ -64,13 +63,15 @@ void Thread::dispatcher() {
 void Thread::init(void (* main)(void *)) {
     db<Thread>(TRC) << "Initializing threads main and dispatcher.\n";
     // Cria a Thread main.
-    Thread::_main = *(new Thread((void (*)())main));
-    Thread::_main_context = *_main.context();
+    //Thread::_main = *(new Thread((void (*)())main));
+    new (&_main) Thread(main, (void *) "main");
+    new (&_main_context) CPU::Context();
     // Cria a Thread dispatcher.
-    Thread::_dispatcher = *(new Thread(Thread::dispatcher));
+    new (&_ready) Thread::Ready_Queue();
+    new (&_dispatcher) Thread((void (*) (void *)) &Thread::dispatcher, (void *) NULL);
     // Troca o contexto para a Thread main.
     Thread::_running = &Thread::_main;
-    Thread::_main_context.load();
+    CPU::switch_context(&_main_context, _main.context());
 }
 
 void Thread::yield() {
@@ -101,6 +102,7 @@ void Thread::yield() {
 
 Thread::~Thread() {
     db<Thread>(TRC) << "Thread " << Thread::_running->id() << " destroyed.\n";
+    delete context();
 }
 
 CPU::Context * Thread::context() {
