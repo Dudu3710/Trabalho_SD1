@@ -84,6 +84,21 @@ public:
     static void yield();
 
     /*
+     * Suspende a thread em execução até que a thread "alvo" finalize.
+     */
+    int join();
+
+    /*
+     * Suspende a thread até que resume() seja chamado.
+     */
+    void suspend();
+
+    /*
+     * Coloca uma Thread que estava suspensa de volta para a fila de prontos.
+     */
+    void resume();
+
+    /*
      * Destrutor de uma thread. Realiza todos os procedimentos para manter a consistência da classe.
      */
     ~Thread();

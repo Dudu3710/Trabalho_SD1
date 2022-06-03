@@ -100,6 +100,12 @@ void Thread::yield() {
     Thread::switch_context(prev, next);
 }
 
+int Thread::join() {}
+
+void Thread::suspend() {}
+
+void Thread::resume() {}
+
 Thread::~Thread() {
     db<Thread>(TRC) << "Thread " << Thread::_running->id() << " destroyed.\n";
     delete context();
