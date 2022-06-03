@@ -5,6 +5,7 @@ __BEGIN_API
 
 Thread * Thread::_running = nullptr;
 unsigned int Thread::_thread_count = 0;
+int Thread::_exit_code = 0;
 Thread Thread::_main;
 CPU::Context Thread::_main_context;
 Thread Thread::_dispatcher;
@@ -22,6 +23,7 @@ void Thread::thread_exit(int exit_code) {
     db<Thread>(TRC) << "Thread::thread_exit(exit_code=" << exit_code << ")\n";
     _state = FINISHING;
     Thread::_thread_count--;
+    Thread::_exit_code = exit_code;
     Thread::yield();
 }
 

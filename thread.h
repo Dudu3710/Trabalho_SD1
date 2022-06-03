@@ -124,6 +124,7 @@ private:
      * Qualquer outro atributo que você achar necessário para a solução.
      */
     static unsigned int _thread_count;
+    int _exit_code;
 };
 
 template<typename ... Tn>
