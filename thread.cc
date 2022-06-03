@@ -63,11 +63,11 @@ void Thread::dispatcher() {
 void Thread::init(void (* main)(void *)) {
     db<Thread>(TRC) << "Initializing threads main and dispatcher.\n";
     // Cria a Thread main.
-    //Thread::_main = *(new Thread((void (*)())main));
     new (&_main) Thread(main, (void *) "main");
     new (&_main_context) CPU::Context();
-    // Cria a Thread dispatcher.
+    // Cria a fila de prontos.
     new (&_ready) Thread::Ready_Queue();
+    // Cria a Thread dispatcher.
     new (&_dispatcher) Thread((void (*) (void *)) &Thread::dispatcher, (void *) NULL);
     // Troca o contexto para a Thread main.
     Thread::_running = &Thread::_main;
