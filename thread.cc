@@ -106,11 +106,32 @@ void Thread::yield() {
     Thread::switch_context(prev, next);
 }
 
-int Thread::join() {}
+int Thread::join() {
+    // Suspende a thread que estava executando (_running) [salvá-la numa variável temporária]
+    Thread * prev = Thread::_running;
+    prev->suspend();
+    // Coloca a thread que chamou join para executar
+    Thread::_running = this;
+    _state = RUNNING;
+    Thread::switch_context(prev, this);
+    // Resume a execução da thread que estava executando anteriormente
+    prev->resume();
+    return _exit_code;
+}
 
-void Thread::suspend() {}
+void Thread::suspend() {
+    if (_state == RUNNING) yield();
+    // Muda seu estado para SUSPENDED
+    _state = SUSPENDED;
+}
 
-void Thread::resume() {}
+void Thread::resume() {
+    if (_state != SUSPENDED) return;
+    // Muda seu estado para READY
+    _state = READY;
+    // Coloca a thread de volta para a fila de prontos
+    Thread::_ready.insert_tail(&_link);
+}
 
 Thread::~Thread() {
     db<Thread>(TRC) << "Thread " << Thread::_running->id() << " destroyed.\n";
