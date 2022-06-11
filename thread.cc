@@ -9,6 +9,7 @@ Thread Thread::_main;
 CPU::Context Thread::_main_context;
 Thread Thread::_dispatcher;
 Thread::Ready_Queue Thread::_ready;
+Thread::Ready_Queue Thread::_suspended;
 
 int Thread::switch_context(Thread * prev, Thread * next) {
     db<Thread>(TRC) << "Switching context from thread " << prev->id() <<
@@ -71,6 +72,7 @@ void Thread::init(void (* main)(void *)) {
     new (&_main_context) CPU::Context();
     // Cria a fila de prontos.
     new (&_ready) Thread::Ready_Queue();
+    new (&_suspended) Thread::Ready_Queue();
     // Cria a Thread dispatcher.
     new (&_dispatcher) Thread((void (*) (void *)) &Thread::dispatcher, (void *) NULL);
     // Troca o contexto para a Thread main.
@@ -81,6 +83,13 @@ void Thread::init(void (* main)(void *)) {
 
 void Thread::yield() {
     db<Thread>(TRC) << "Thread " << Thread::_running->id() << " is yielding...\n";
+    Thread * prev = Thread::_running;
+    if (prev->_state == FINISHING) {
+        if (prev->_call_join == true) {
+            db<Thread>(TRC) << "Thread " << prev->id() << " is resuming...\n";
+            prev -> resume();
+        }
+    }
     // Escolhe uma próxima thread a ser executada
     Thread * next = Thread::_ready.remove()->object();
     /* Atualiza a prioridade da tarefa que estava
@@ -89,48 +98,62 @@ void Thread::yield() {
        prontos atualizada (cuide de casos especiais, como
        estado ser FINISHING ou Thread main que não devem
        ter suas prioridades alteradas) */
-    Thread * prev = Thread::_running;
-    if (prev != &Thread::_main && prev->_state != FINISHING)
+
+    if (prev != &Thread::_main && prev->_state != FINISHING){
         prev->_link.rank(std::chrono::duration_cast<std::chrono::microseconds>
             (std::chrono::high_resolution_clock::now().time_since_epoch()).count());
     // Reinsire a thread que estava executando na fila de prontos
-    if (prev->id() > 0) {
-        prev->_state = READY;
-        Thread::_ready.insert_tail(&prev->_link);
+        if (prev->id() > 0) {
+            prev->_state = READY;
+            Thread::_ready.insert_tail(&prev->_link);
+        }
     }
     // Atualiza o ponteiro _running
     Thread::_running = next;
     // Atualiza o estado da próxima thread a ser executada
     next->_state = RUNNING;
+  
     // Troca o contexto entre as threads
     Thread::switch_context(prev, next);
 }
 
 int Thread::join() {
     // Suspende a thread que estava executando (_running) [salvá-la numa variável temporária]
+    // informar que chamou o join
+    
+    _call_join = true;
     Thread * prev = Thread::_running;
+    db<Thread>(TRC) << "Thread prev " << prev->id() << " id!!.\n";
+    db<Thread>(TRC) << "Thread this " << this->id() << " id!!.\n";
     prev->suspend();
     // Coloca a thread que chamou join para executar
     Thread::_running = this;
     _state = RUNNING;
-    Thread::switch_context(prev, this);
+    //Thread::switch_context(prev, this);
     // Resume a execução da thread que estava executando anteriormente
-    prev->resume();
     return _exit_code;
 }
 
 void Thread::suspend() {
-    if (_state == RUNNING) yield();
+    //if (_state == RUNNING) yield();
     // Muda seu estado para SUSPENDED
     _state = SUSPENDED;
+    // Adiciona na lista de suspended
+    db<Thread>(TRC) << "Thread this id =  " << this->id() << " suspendida!!.\n";
+    Thread::_suspended.insert_tail(&this->_link);
+    yield();
 }
 
 void Thread::resume() {
-    if (_state != SUSPENDED) return;
+    //if (_state != SUSPENDED) return;
     // Muda seu estado para READY
-    _state = READY;
+    Thread * resume = Thread::_suspended.remove()->object();
+    resume->_state = READY;
     // Coloca a thread de volta para a fila de prontos
-    Thread::_ready.insert_tail(&_link);
+    //Thread::_ready.insert_tail(&resume->_link);
+    db<Thread>(TRC) << "Thread " << resume->id() << " resumida.\n";
+    Thread::_running = resume;
+    Thread::switch_context(this, resume);
 }
 
 Thread::~Thread() {

@@ -111,6 +111,7 @@ public:
 
 private:
     unsigned int _id;
+    bool _call_join;
     Context * volatile _context;
     static Thread * _running;
 
@@ -118,6 +119,7 @@ private:
     static CPU::Context _main_context;
     static Thread _dispatcher;
     static Ready_Queue _ready;
+    static Ready_Queue _suspended; 
     Ready_Queue::Element _link;
     volatile State _state;
 
@@ -136,7 +138,7 @@ inline Thread::Thread(void (* entry)(Tn ...), Tn ... an)
     db<Thread>(TRC) << "Thread " << _thread_count << " created.\n";
     _context = new CPU::Context(entry, an ...);
     _id = Thread::_thread_count++;
-    _exit_code = 0;
+    //_exit_code = id - 1;
     if (_id > 0)
         _ready.insert_tail(&_link);
     _state = READY;
