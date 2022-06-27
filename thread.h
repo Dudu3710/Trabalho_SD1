@@ -23,7 +23,8 @@ public:
         RUNNING,
         READY,
         SUSPENDED,
-        FINISHING
+        FINISHING,
+        WAITING
     };
 
     /*
@@ -100,6 +101,21 @@ public:
     void resume();
 
     /*
+    * Coloca a thread para dormir
+    */
+    static void sleep();
+    
+    /*
+    * Acorda uma thread que estava dormindo
+    */
+    static void wakeup();
+
+    /*
+    * Acorda todas as threads
+    */
+    static void wakeup_all();
+
+    /*
      * Destrutor de uma thread. Realiza todos os procedimentos para manter a consistência da classe.
      */
     ~Thread();
@@ -119,7 +135,8 @@ private:
     static CPU::Context _main_context;
     static Thread _dispatcher;
     static Ready_Queue _ready;
-    static Ready_Queue _suspended; 
+    static Ready_Queue _suspended;
+    static Ready_Queue _waiting; 
     Ready_Queue::Element _link;
     volatile State _state;
 
