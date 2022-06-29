@@ -15,7 +15,9 @@ public:
     ~Semaphore() {delete this;};
 
     void p();
+    
     void v();
+
 private:
     // Atomic operations
     int finc(volatile int & number);

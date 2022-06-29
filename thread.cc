@@ -101,7 +101,7 @@ void Thread::yield() {
        estado ser FINISHING ou Thread main que não devem
        ter suas prioridades alteradas) */
 
-    if (prev != &Thread::_main && prev->_state != FINISHING){
+    if (prev != &Thread::_main && prev->_state != FINISHING && prev->_state != WAITING && prev->_state != SUSPENDED){
         prev->_link.rank(std::chrono::duration_cast<std::chrono::microseconds>
             (std::chrono::high_resolution_clock::now().time_since_epoch()).count());
     // Reinsire a thread que estava executando na fila de prontos
@@ -163,6 +163,7 @@ void Thread::sleep() {
     Thread * atual = running();
     atual->_state = WAITING;
     Thread::_waiting.insert_tail(&atual->_link);
+    atual->yield();
 }
     
 
