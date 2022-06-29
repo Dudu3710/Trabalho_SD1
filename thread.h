@@ -24,7 +24,6 @@ public:
         READY,
         SUSPENDED,
         FINISHING,
-        WAITING
     };
 
     /*
@@ -99,21 +98,6 @@ public:
      * Coloca uma Thread que estava suspensa de volta para a fila de prontos.
      */
     void resume();
-
-    /*
-    * Coloca a thread para dormir
-    */
-    static void sleep();
-    
-    /*
-    * Acorda uma thread que estava dormindo
-    */
-    static void wakeup();
-
-    /*
-    * Acorda todas as threads
-    */
-    static void wakeup_all();
 
     /*
      * Destrutor de uma thread. Realiza todos os procedimentos para manter a consistência da classe.
