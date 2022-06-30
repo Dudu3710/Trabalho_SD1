@@ -103,17 +103,12 @@ public:
     /*
     * Coloca a thread para dormir
     */
-    static void sleep();
+    void sleep();
     
     /*
     * Acorda uma thread que estava dormindo
     */
-    static void wakeup();
-
-    /*
-    * Acorda todas as threads
-    */
-    static void wakeup_all();
+    void wakeup();
 
     /*
      * Destrutor de uma thread. Realiza todos os procedimentos para manter a consistência da classe.
@@ -124,6 +119,7 @@ public:
      * Qualquer outro método que você achar necessário para a solução.
      */
     Context * context();
+    Ready_Queue::Element * link();
 
 private:
     unsigned int _id;
@@ -136,7 +132,6 @@ private:
     static Thread _dispatcher;
     static Ready_Queue _ready;
     static Ready_Queue _suspended;
-    static Ready_Queue _waiting; 
     Ready_Queue::Element _link;
     volatile State _state;
 

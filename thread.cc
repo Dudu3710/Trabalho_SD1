@@ -10,7 +10,6 @@ CPU::Context Thread::_main_context;
 Thread Thread::_dispatcher;
 Thread::Ready_Queue Thread::_ready;
 Thread::Ready_Queue Thread::_suspended;
-Thread::Ready_Queue Thread::_waiting;
 
 int Thread::switch_context(Thread * prev, Thread * next) {
     db<Thread>(TRC) << "Switching context from thread " << prev->id() <<
@@ -74,7 +73,6 @@ void Thread::init(void (* main)(void *)) {
     // Cria a fila de prontos.
     new (&_ready) Thread::Ready_Queue();
     new (&_suspended) Thread::Ready_Queue();
-    new (&_waiting) Thread::Ready_Queue();
     // Cria a Thread dispatcher.
     new (&_dispatcher) Thread((void (*) (void *)) &Thread::dispatcher, (void *) NULL);
     // Troca o contexto para a Thread main.
@@ -160,28 +158,15 @@ void Thread::resume() {
 
 void Thread::sleep() {
     db<Thread>(TRC) << "Thread " << running()->id() << " dormindo.\n";
-    Thread * atual = running();
-    atual->_state = WAITING;
-    Thread::_waiting.insert_tail(&atual->_link);
-    atual->yield();
+    _state = WAITING;
+    yield();
 }
     
 
 void Thread::wakeup() {
-    Thread * acordada = Thread::_waiting.remove()->object();
-    acordada->_state = READY;
+    _state = READY;
     // Coloca a thread de volta para a fila de prontos
-    Thread::_ready.insert_tail(&acordada->_link);
-}
-
-
-void Thread::wakeup_all() {
-    while (Thread::_waiting.size() != 0) {
-        Thread * acordada = Thread::_waiting.remove()->object();
-        acordada->_state = READY;
-        // Coloca a thread de volta para a fila de prontos
-        Thread::_ready.insert_tail(&acordada->_link);
-    }
+    Thread::_ready.insert_tail(&_link);
 }
 
 Thread::~Thread() {
@@ -192,6 +177,10 @@ Thread::~Thread() {
 
 CPU::Context * Thread::context() {
     return _context;
+}
+
+Thread::Ready_Queue::Element * Thread::link() {
+    return &_link;
 }
 
 __END_API

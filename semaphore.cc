@@ -35,15 +35,22 @@ int Semaphore::fdec(volatile int & number) {
 }
 
 void Semaphore::sleep() {
-    Thread::sleep();
+    Thread * atual = Thread::running();
+    _waiting.insert_tail(atual->link());
+    atual->sleep();
 }
 
 void Semaphore::wakeup() {
-    Thread::wakeup();
+    Thread * acordada = _waiting.remove()->object();
+    acordada->wakeup();
 }
 
 void Semaphore::wakeup_all() {
-    Thread::wakeup_all();
+    Thread * acordada;
+    while (_waiting.size() > 0) {
+        acordada = _waiting.remove()->object();
+        acordada->wakeup();
+    }
 }
 
 __END_API
