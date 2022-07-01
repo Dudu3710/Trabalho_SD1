@@ -19,8 +19,7 @@ public:
         new (&_waiting) Waiting_Queue();
     };
     ~Semaphore() {
-        wakeup_all();
-        delete this;
+        wakeup_all();;
     };
 
     void p();

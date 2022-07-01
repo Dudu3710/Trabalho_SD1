@@ -49,7 +49,10 @@ void Thread::dispatcher() {
     // Enquanto existir thread do usuário
     while (Thread::_thread_count > 2) {
         // Escolhe uma próxima thread a ser executada
+        //printf("next\n");
+        //printf("size = %d\n",Thread::_ready.size());
         Thread * next = Thread::_ready.remove()->object();
+
         /* Atualiza o status da própria thread dispatcher
            para READY e reinsire a mesma em _ready */
         Thread::_dispatcher._state = READY;
@@ -61,7 +64,7 @@ void Thread::dispatcher() {
         // Atualiza o estado da próxima thread a ser executada
         next->_state = RUNNING;
         // Troca o contexto entre as duas threads
-        Thread::switch_context(prev, next);
+        Thread::switch_context(&_dispatcher, next);
         /* Testa se o estado da próxima thread é FINISHING
            e caso afirmativo a remove de _ready */
         if (next->_state == FINISHING) {
@@ -134,8 +137,8 @@ int Thread::join() {
     db<Thread>(TRC) << "Thread this " << this->id() << " id!!.\n";
     prev->suspend();
     // Coloca a thread que chamou join para executar
-    Thread::_running = this;
-    _state = RUNNING;
+    //Thread::_running = this;
+    //_state = RUNNING;
     //Thread::switch_context(prev, this);
     // Resume a execução da thread que estava executando anteriormente
     return _exit_code;
@@ -175,7 +178,8 @@ void Thread::wakeup() {
     _state = READY;
     // Coloca a thread de volta para a fila de prontos
     Thread::_ready.insert_tail(&_link);
-    //yield();
+    //printf("size WAKEUP = %d\n",Thread::_ready.size());
+    yield();
 }
 
 Thread::~Thread() {
