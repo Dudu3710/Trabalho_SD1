@@ -14,8 +14,12 @@ Thread::Ready_Queue Thread::_suspended;
 int Thread::switch_context(Thread * prev, Thread * next) {
     db<Thread>(TRC) << "Switching context from thread " << prev->id() <<
                         " to thread " << next->id() << ".\n";
-    if (prev != next) {
+    if (prev->id() != next->id()) {
+        //printf("%d\n",running()->id());
         Thread::_running = next;
+        //printf("%d\n",running()->id());
+        //("%d\n",next->id());
+
         return CPU::switch_context(prev->context(), next->context());
     }
     return 0;
@@ -25,7 +29,15 @@ void Thread::thread_exit(int exit_code) {
     db<Thread>(TRC) << "Thread::thread_exit(exit_code=" << exit_code << ")\n";
     _state = FINISHING;
     Thread::_exit_code = exit_code;
-    Thread::yield();
+    if (this->_call_join == true) {
+            db<Thread>(TRC) << "Thread " << this->id() << " is resuming...\n";
+            this -> resume();
+            switch_context(this, &_main);
+        }
+
+    if (this->_call_join == false){
+        yield();
+    }
 }
 
 int Thread::id() {
@@ -84,12 +96,6 @@ void Thread::init(void (* main)(void *)) {
 void Thread::yield() {
     db<Thread>(TRC) << "Thread " << Thread::_running->id() << " is yielding...\n";
     Thread * prev = Thread::_running;
-    if (prev->_state == FINISHING) {
-        if (prev->_call_join == true) {
-            db<Thread>(TRC) << "Thread " << prev->id() << " is resuming...\n";
-            prev -> resume();
-        }
-    }
     // Escolhe uma próxima thread a ser executada
     Thread * next = Thread::_ready.remove()->object();
     /* Atualiza a prioridade da tarefa que estava
@@ -122,7 +128,8 @@ int Thread::join() {
     // informar que chamou o join
     
     _call_join = true;
-    Thread * prev = Thread::_running;
+    Thread * prev = &_main;
+    //printf("%d\n",prev->id());
     db<Thread>(TRC) << "Thread prev " << prev->id() << " id!!.\n";
     db<Thread>(TRC) << "Thread this " << this->id() << " id!!.\n";
     prev->suspend();
@@ -152,8 +159,8 @@ void Thread::resume() {
     // Coloca a thread de volta para a fila de prontos
     //Thread::_ready.insert_tail(&resume->_link);
     db<Thread>(TRC) << "Thread " << resume->id() << " resumida.\n";
-    Thread::_running = resume;
-    Thread::switch_context(this, resume);
+    //Thread::_running = resume;
+    //Thread::switch_context(this, &_main);
 }
 
 void Thread::sleep() {
@@ -164,9 +171,11 @@ void Thread::sleep() {
     
 
 void Thread::wakeup() {
+    db<Thread>(TRC) << "Thread " << running()->id() << " acordada.\n";
     _state = READY;
     // Coloca a thread de volta para a fila de prontos
     Thread::_ready.insert_tail(&_link);
+    //yield();
 }
 
 Thread::~Thread() {
