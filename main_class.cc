@@ -2,7 +2,10 @@
 
 __BEGIN_API
 
-Thread *Main::ping_pong_threads[5];
-Semaphore *Main::sem;
+// game
+void Main::run(void * name) {
+    Game * game = new Game();
+    delete game;
+}
 
 __END_API
