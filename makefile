@@ -1,19 +1,27 @@
-CC := g++
 
-all: main
+IDIR =.
+CC=g++
+LDLIBS =  -lsfml-graphics -lsfml-window -lsfml-system -lm  -lpng
+CFLAGS=-I$(IDIR) -g -Wextra
 
-main.o: main.cc
-main_class.o: main_class.cc
-cpu.o: cpu.cc
-debug.o: debug.cc
-system.o: system.cc
-thread.o: thread.cc
-semaphore.o: semaphore.cc
-	$(CC) -c $^
+LDFLAGS= $(CFLAGS)
 
-main: main.o main_class.o cpu.o debug.o system.o thread.o semaphore.o
-	$(CC) $^ -o $@
+ODIR=.
+LIBS= $(LDLIBS) $(LDFLAGS)
+
+_DEPS = cpu.h debug.h draw.h game.h ghost.h main_class.h pacman.h semaphore.h system.h thread.h timer.h traits.h input.h
+DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
+
+_OBJ = main.o main_class.o cpu.o debug.o system.o thread.o semaphore.o draw.o game.o ghost.o pacman.o timer.o input.o
+OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
+
+$(ODIR)/%.o: %.c $(DEPS)
+	$(CC) -std=c++14 -c -o $@ $< $(CFLAGS) -Wextra
+
+main: $(OBJ)
+	$(CC) -std=c++14 -o $@ $^ $(CFLAGS) $(LIBS)
+
+.PHONY: clean
 
 clean:
-	rm -f main
-	rm -f *.o
+	rm -f $(ODIR)/*.o *~ core $(INCDIR)/*~ 

@@ -9,9 +9,10 @@
 #include "pacman.h"
 #include "semaphore.h"
 #include "draw.h"
+#include "input.h"
 #include <unistd.h>
 #include <math.h>
-//#include <png.h>
+#include <png.h>
 #include <SFML/Graphics.hpp>
 
 using namespace std;
@@ -103,6 +104,8 @@ public:
 
         static tile get_tile(int x, int y);
 
+        static sf::RenderWindow * _window;
+
 
 
 
@@ -177,11 +180,16 @@ protected:
 
         static Pacman * _pacman;
         static Thread * _input;
-        static Ghost * _ghost[4];
+        //static Ghost * _ghost[4];
+        static Ghost *ghost_b;
+        static Ghost *ghost_p;
+        static Ghost *ghost_r;
+        static Ghost *ghost_y;
         static Draw * _drawing;
-        static Semaphore * _semaphore;
+        // Input * _input;
+        static Semaphore _semaphore;
 
-        static sf::RenderWindow * _window;
+
 	static state _stateGame;
 	
 	static int _score;
@@ -206,6 +214,23 @@ protected:
 
 private:
 
+        void load_and_bind_textures();
+
+private:
+
+        static Thread *pacman_thread;
+        static Thread *ghost_thread_b;
+        static Thread *ghost_thread_p;
+        static Thread *ghost_thread_r;
+        static Thread *ghost_thread_y;
+        static Thread * _drawing_thread;
+        static Thread * _input_thread;
+        static void criar_pacman();
+        static void criar_ghost(int cor);
+        static void desenhar();
+        static void ler_input();
+
+        
 };
 
 

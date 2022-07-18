@@ -15,6 +15,11 @@ class Debug;
 class Thread;
 class Lists;
 class Timer;
+class Ghost;
+class Pacman;
+class Game;
+class Draw;
+
 
 // declaração da classe Traits
 template<typename T>
@@ -54,6 +59,26 @@ template<> struct Traits<Timer> : public Traits<void>
 {
     static const bool debugged = true;
     static const unsigned int q_timer = 20000000;
+};
+
+template<> struct Traits<Ghost> : public Traits<void>
+{
+    static const bool debugged = true;
+};
+
+template<> struct Traits<Pacman> : public Traits<void>
+{
+    static const bool debugged = true;
+};
+
+template<> struct Traits<Game> : public Traits<void>
+{
+    static const bool debugged = true;
+};
+
+template<> struct Traits<Draw> : public Traits<void>
+{
+    static const bool debugged = true;
 };
 
 __END_API
