@@ -4,7 +4,7 @@ __BEGIN_API
 
 
 Thread* Draw::_draw;
-sf::RenderWindow * Game::_window;
+//sf::RenderWindow * Game::_window;
 sf::Sprite Draw::pac_0_sprites;
 sf::Sprite Draw::ghost_r_0_sprites;
 sf::Sprite Draw::maze_sprites;
@@ -18,12 +18,14 @@ Draw::Draw() {
 void Draw::draw_run(){
     while(Game::_window->isOpen()){
         printf("ENTREI DRAW\n");
-        // Game::_window->draw(maze_sprites);
-        // pac_0_sprites.setPosition(220, 365);
-        // Game::_window->draw(pac_0_sprites);
-        // ghost_r_0_sprites.setPosition(245, 150);
-        // Game::_window->draw(ghost_r_0_sprites);
-        // Game::_window->display();
+        //sleep(2);
+        Game::_window->clear();
+        Game::_window->draw(maze_sprites);
+        pac_0_sprites.setPosition(220, 365);
+        Game::_window->draw(pac_0_sprites);
+        ghost_r_0_sprites.setPosition(245, 150);
+        Game::_window->draw(ghost_r_0_sprites);
+        Game::_window->display();
         _draw->yield();
     }
 }

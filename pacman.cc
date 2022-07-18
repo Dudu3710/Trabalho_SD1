@@ -27,6 +27,7 @@ void Pacman::pacman_run() {
     while(Game::_window->isOpen()){
 
         printf("EU ENTREI NO PACMANNN\n");
+        //sleep(2);
 
         pacman_thread->yield();
     }

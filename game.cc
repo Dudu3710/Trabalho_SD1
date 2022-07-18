@@ -24,14 +24,14 @@ Ghost * Game::ghost_p;
 Ghost * Game::ghost_r;
 Ghost * Game::ghost_y;
 Draw * Game::_drawing;
-sf::RenderWindow * _window;
+sf::RenderWindow * Game::_window;
 Semaphore Game::_semaphore;
-Thread* Game::pacman_thread;
-Thread* Game::ghost_thread_b;
-Thread* Game::ghost_thread_p;
-Thread* Game::ghost_thread_r;
-Thread* Game::ghost_thread_y;
-Thread* Game::_drawing_thread;
+// Thread* Game::pacman_thread;
+// Thread* Game::ghost_thread_b;
+// Thread* Game::ghost_thread_p;
+// Thread* Game::ghost_thread_r;
+// Thread* Game::ghost_thread_y;
+// Thread* Game::_drawing_thread;
 Thread* Game::_input;
  //Thread* Game::_input_thread = null
 
@@ -82,12 +82,12 @@ Game::Game() {
     // _window.display();
     
     _input->join();
-    pacman_thread->join();
-    ghost_thread_b->join();
-    ghost_thread_p->join();
-    ghost_thread_r->join();
-    ghost_thread_y->join();
-    _drawing_thread->join();
+    _pacman->pacman_thread->join();
+    ghost_b->ghost_thread->join();
+    ghost_p->ghost_thread->join();
+    ghost_r->ghost_thread->join();
+    ghost_y->ghost_thread->join();
+    _drawing->_draw->join();
 
 
 
@@ -107,6 +107,7 @@ void Game::input_handler(sf::RenderWindow * _window){
     while (_window->isOpen())
     {   
         printf("ESTOU na maIN\n");
+        //sleep(2);
         sf::Event event;
         while (_window->pollEvent(event))
         {
@@ -118,7 +119,7 @@ void Game::input_handler(sf::RenderWindow * _window){
             
             // key pressed
             case sf::Event::KeyPressed:
-                //_semaphore.p();
+                _semaphore.p();
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
                     std::cout << "Keyboard esquerda!" << std::endl;
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
@@ -132,7 +133,7 @@ void Game::input_handler(sf::RenderWindow * _window){
                 break;
             
             }
-            //_semaphore.v();
+            _semaphore.v();
             //_input->yield();
         }
         _input->yield();

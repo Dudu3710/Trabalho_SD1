@@ -218,13 +218,13 @@ private:
 
 private:
 
-        static Thread *pacman_thread;
-        static Thread *ghost_thread_b;
-        static Thread *ghost_thread_p;
-        static Thread *ghost_thread_r;
-        static Thread *ghost_thread_y;
-        static Thread * _drawing_thread;
-        static Thread * _input_thread;
+        // static Thread *pacman_thread;
+        // static Thread *ghost_thread_b;
+        // static Thread *ghost_thread_p;
+        // static Thread *ghost_thread_r;
+        // static Thread *ghost_thread_y;
+        // static Thread * _drawing_thread;
+        // static Thread * _input_thread;
         static void criar_pacman();
         static void criar_ghost(int cor);
         static void desenhar();
