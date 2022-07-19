@@ -31,24 +31,10 @@ public:
     static void read_maze_and_draw();
 
     static void draw_pacman();
+    static void draw_ghosts();
 
-    void draw_ghost_b();
-    static void draw_ghost_p();
-    static void draw_ghost_r();
-    static void draw_ghost_y();
-
-    Ghost* _ghost_r;
-    Ghost* _ghost_b;
-    Ghost* _ghost_y;
-    Ghost* _ghost_p;
 
 protected:
-
-
-
-
-
-
 
 private:
     void load_and_bind_textures();

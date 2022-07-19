@@ -20,17 +20,7 @@ sf::Sprite Draw::maze_sprites;
 sf::Sprite Draw::pill_sprites;
 sf::Sprite Draw::bigpill_sprites;
 
-
-// Ghost * _ghost_r = nullptr;
-// //Ghost * _ghost_b = nullptr;
-// Ghost * _ghost_y = nullptr;
-// Ghost * _ghost_p = nullptr;
-
 Draw::Draw() {
-    Ghost * _ghost_r = nullptr;
-    Ghost * _ghost_b = nullptr;
-    Ghost * _ghost_y = nullptr;
-    Ghost * _ghost_p = nullptr;
     _draw = new Thread(Draw::draw_run);
     //load bin and textures
     load_and_bind_textures();
@@ -44,12 +34,7 @@ void Draw::draw_run(){
         Game::_window->draw(maze_sprites);
 
         draw_pacman();
-
-        draw_ghost_b();
-        draw_ghost_p();
-        draw_ghost_r();
-        draw_ghost_y();
-
+        draw_ghosts();
         //pac_0_sprites.setPosition(Pacman::x_pacman, Pacman::y_pacman);
         //Game::_window->draw(pac_0_sprites);
 
@@ -97,25 +82,18 @@ void Draw::draw_pacman(){
     }
 }
 
-void Draw::draw_ghost_b() {
-    ghost_b_0_sprites.setPosition(_ghost_b->x_ghost, _ghost_b->y_ghost);
-    //Game::_window->draw(ghost_b_0_sprites);     
+void Draw::draw_ghosts() {
+    ghost_b_0_sprites.setPosition(Game::ghost_b->x_ghost, Game::ghost_b->y_ghost);
+    Game::_window->draw(ghost_b_0_sprites);
 
-}
+    ghost_p_0_sprites.setPosition(Game::ghost_p->x_ghost, Game::ghost_p->y_ghost);
+    Game::_window->draw(ghost_p_0_sprites);
 
-void Draw::draw_ghost_p() {
+    ghost_r_0_sprites.setPosition(Game::ghost_r->x_ghost, Game::ghost_r->y_ghost);
+    Game::_window->draw(ghost_r_0_sprites);
 
-
-}
-
-void Draw::draw_ghost_r() {
-
-
-}
-
-void Draw::draw_ghost_y() {
-
-
+    ghost_y_0_sprites.setPosition(Game::ghost_y->x_ghost, Game::ghost_y->y_ghost);
+    Game::_window->draw(ghost_y_0_sprites);
 }
 
 void Draw::load_and_bind_textures()

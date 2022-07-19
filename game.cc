@@ -54,7 +54,6 @@ Game::Game() {
     // ghost_p = new Ghost(1, 195, 150);
     // ghost_r = new Ghost(2, 200, 150);
     // ghost_y = new Ghost(3, 205, 150);
-    _drawing = new Draw();
 
     _input = new Thread(input_handler, &window);
 
@@ -66,6 +65,7 @@ Game::Game() {
     // _drawing_thread = new Thread(desenhar);
     // //_input_thread = new Thread(ler_input);
 
+    _drawing = new Draw();
 
     //Pacman *_pacman = new Pacman(200, 300);
 
@@ -169,7 +169,6 @@ void Game::criar_ghost(int cor) {
     {
     case (0):
         ghost_b = new Ghost(0, 190, 150);
-        _drawing->_ghost_b = ghost_b;
         while (_window->isOpen()){
             ghost_b->ghost_run(cor);
             ghost_thread_b->yield();
@@ -178,7 +177,6 @@ void Game::criar_ghost(int cor) {
         break;
     case (1):
         ghost_p = new Ghost(1, 195, 150);
-        _drawing->_ghost_p = ghost_p;
         while (_window->isOpen()){
             ghost_p->ghost_run(cor);
             ghost_thread_p ->yield();
@@ -187,7 +185,6 @@ void Game::criar_ghost(int cor) {
         break;
     case (2):
         ghost_r = new Ghost(2, 200, 150);
-        _drawing->_ghost_r = ghost_r;
         while (_window->isOpen()){
             ghost_r->ghost_run(cor);
             ghost_thread_r ->yield();
@@ -196,9 +193,7 @@ void Game::criar_ghost(int cor) {
         break;
     case (3):
         ghost_y = new Ghost(3, 205, 150);
-        _drawing->_ghost_y = ghost_y;
         while (_window->isOpen()){
-
             ghost_y->ghost_run(cor);
             ghost_thread_y->yield();
         }

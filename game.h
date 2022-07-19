@@ -151,10 +151,10 @@ public:
         static Thread * ghost_thread_r;
         static Thread * ghost_thread_y;
 
-
-
-
-
+        static Ghost *ghost_b;
+        static Ghost *ghost_p;
+        static Ghost *ghost_r;
+        static Ghost *ghost_y;
 
 protected:
 
@@ -198,10 +198,6 @@ protected:
 
         static Thread * _input;
         //static Ghost * _ghost[4];
-        static Ghost *ghost_b;
-        static Ghost *ghost_p;
-        static Ghost *ghost_r;
-        static Ghost *ghost_y;
         static Draw * _drawing;
         // Input * _input;
         static Semaphore _semaphore;
