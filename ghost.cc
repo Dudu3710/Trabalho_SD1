@@ -23,7 +23,7 @@ void Ghost::ghost_run(int cor) {
 
     while(Game::_window->isOpen()){
 
-        printf("GOHOST\n");
+        //printf("GOHOST\n");
         //sleep(2);
         ghost_thread->yield();
     }

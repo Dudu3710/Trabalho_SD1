@@ -8,6 +8,8 @@ Thread* Draw::_draw;
 sf::Sprite Draw::pac_0_sprites;
 sf::Sprite Draw::ghost_r_0_sprites;
 sf::Sprite Draw::maze_sprites;
+sf::Sprite Draw::pill_sprites;
+sf::Sprite Draw::bigpill_sprites;
 
 Draw::Draw() {
     _draw = new Thread(Draw::draw_run);
@@ -17,33 +19,57 @@ Draw::Draw() {
 
 void Draw::draw_run(){
     while(Game::_window->isOpen()){
-        printf("ENTREI DRAW\n");
+        //printf("ENTREI DRAW\n");
         //sleep(2);
         Game::_window->clear();
         Game::_window->draw(maze_sprites);
-        pac_0_sprites.setPosition(220, 365);
+
+        read_maze_and_draw();
+        Game::maze_running;
+
+        pac_0_sprites.setPosition(Pacman::x_pacman, Pacman::y_pacman);
         Game::_window->draw(pac_0_sprites);
-        ghost_r_0_sprites.setPosition(245, 150);
-        Game::_window->draw(ghost_r_0_sprites);
         Game::_window->display();
+        //printf("SAI DO DEAW");
         _draw->yield();
     }
 }
 
+void Draw::read_maze_and_draw() {
+    for (int i = 0 ; i<28; i++) {
+        for (int j = 0; j < 31 ; j++) {
+            if (Game::maze_running[i][j] == W) {
+                ghost_r_0_sprites.setPosition(i*16,j*16);
+                Game::_window->draw(ghost_r_0_sprites);
+            } 
+            if (Game::maze_running[i][j] == O) {
+                bigpill_sprites.setPosition(i*16,j*16);
+                Game::_window->draw(bigpill_sprites);
+            }
+            if (Game::maze_running[i][j] == o) {
+                pill_sprites.setPosition(i*16,j*16);
+                Game::_window->draw(pill_sprites);
+            }
+            
+        }
+    }
+
+}
 void Draw::load_and_bind_textures()
 {
     // Bind map textures    
+    
     maze_tex.loadFromFile("sprites/maze/maze.png");
-    maze_sprite.setTexture(maze_tex);
-    maze_sprite.scale(2, 2);
+    maze_sprites.setTexture(maze_tex);
+    maze_sprites.scale(2, 2);
     pill_tex.loadFromFile("sprites/maze/p-0.png");
-    pill_sprite.setTexture(pill_tex);
+    pill_sprites.setTexture(pill_tex);
     bigPill_tex.loadFromFile("sprites/maze/p-1.png");
-    bigPill_sprite.setTexture(bigPill_tex);
+    bigpill_sprites.setTexture(bigPill_tex);
 
     // Bind Pacman textures
     pac_0_tex.loadFromFile("sprites/pacman/0.png");
-    pac_0_sprite.setTexture(pac_0_tex);
+    pac_0_sprites.setTexture(pac_0_tex);
     pac_1_tex.loadFromFile("sprites/pacman/1.png");
     pac_1_sprite.setTexture(pac_1_tex);
     pac_2_tex.loadFromFile("sprites/pacman/2.png");
@@ -73,7 +99,7 @@ void Draw::load_and_bind_textures()
 
     // Bind ghost textures
     ghost_r_0_tex.loadFromFile("sprites/ghosts/r-0.png");
-    ghost_r_0_sprite.setTexture(ghost_r_0_tex);
+    ghost_r_0_sprites.setTexture(ghost_r_0_tex);
     ghost_r_1_tex.loadFromFile("sprites/ghosts/r-1.png");
     ghost_r_1_sprite.setTexture(ghost_r_1_tex);
     ghost_p_0_tex.loadFromFile("sprites/ghosts/p-0.png");

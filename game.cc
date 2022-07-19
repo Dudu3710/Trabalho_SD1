@@ -39,7 +39,8 @@ Thread* Game::_input;
 Game::Game() {
 
     
-    sf::RenderWindow window (sf::VideoMode(450, 500), "Pacman");
+    sf::RenderWindow window (sf::VideoMode(448, 496), "Pacman");
+    
     window.setKeyRepeatEnabled(false);
     window.setFramerateLimit(30);
 
@@ -80,14 +81,13 @@ Game::Game() {
     // ghost_r_0_sprite.setPosition(245, 150);
     // _window.draw(ghost_r_0_sprite);
     // _window.display();
-    
+    _drawing->_draw->join();
     _input->join();
     _pacman->pacman_thread->join();
     ghost_b->ghost_thread->join();
     ghost_p->ghost_thread->join();
     ghost_r->ghost_thread->join();
     ghost_y->ghost_thread->join();
-    _drawing->_draw->join();
 
 
 
@@ -106,7 +106,7 @@ Game::Game() {
 void Game::input_handler(sf::RenderWindow * _window){
     while (_window->isOpen())
     {   
-        printf("ESTOU na maIN\n");
+        //printf("ESTOU na maIN\n");
         //sleep(2);
         sf::Event event;
         while (_window->pollEvent(event))
@@ -122,12 +122,16 @@ void Game::input_handler(sf::RenderWindow * _window){
                 _semaphore.p();
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
                     std::cout << "Keyboard esquerda!" << std::endl;
+                    _pacman->set_direction(0);
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
                     std::cout << "Keyboard direita!" << std::endl;
+                    _pacman->set_direction(1);
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
                     std::cout << "Keyboard para baixo!" << std::endl;
+                    _pacman->set_direction(2);
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
                     std::cout << "Keyboard para cima!" << std::endl;
+                    _pacman->set_direction(3);
                 } else
                     std::cout << "Keyboard pressed = " << event.key.code << std::endl;
                 break;
@@ -140,6 +144,13 @@ void Game::input_handler(sf::RenderWindow * _window){
         
         _window->clear();
 }
+}
+
+Game::tile Game::get_tile(int x, int y) {
+    int i = round(x/16);
+    int j = round(y/16);
+
+    return maze_running[i][j];
 }
 
 // void Game::criar_pacman() {

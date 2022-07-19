@@ -27,7 +27,7 @@ public:
 
     static void join(){ if(_draw){ _draw->join();}}
 
-
+    static void read_maze_and_draw();
 
 protected:
 

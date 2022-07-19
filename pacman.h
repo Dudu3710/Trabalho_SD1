@@ -13,7 +13,7 @@ class Pacman
 
 public:
     typedef enum {W, G, P, u, o, e, O, E, F} tile;
-    typedef enum {LEFT, UP, RIGHT, DOWN, NIL} directions;
+    typedef enum {LEFT, UP, RIGHT, DOWN} directions;
     typedef enum {READY, RUNNING, FINISHING, PAUSED} state;
 
     Pacman();
@@ -24,11 +24,15 @@ public:
 
     static int x_pacman;
     static int y_pacman;
+    static int contador;
+    static int vel;
 
+    static void move();
     bool window_open;
 
-    state state_pacman;
-    directions direction_pacman;
+    void set_direction(int dir);
+    static state state_pacman;
+    static directions direction_pacman;
 
     static Thread *pacman_thread;
 

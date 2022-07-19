@@ -73,7 +73,7 @@ class Game
 public:
 
         typedef enum {W, G, P, u, o, e, O, E, F} tile;
-        typedef enum {LEFT, UP, RIGHT, DOWN} directions;
+        //typedef enum {LEFT, UP, RIGHT, DOWN} directions;
         typedef enum {READY, RUNNING, FINISHING, PAUSED} state;
 
         //inicializa as threads
@@ -106,6 +106,39 @@ public:
 
         static sf::RenderWindow * _window;
 
+        inline static tile maze_running[28][31] =
+                {
+                {W,W,W,W,W,W,W,W,W,W,u,u,u,W,P,W,u,u,u,W,W,W,W,W,W,W,W,W,W,W,W},
+                {W,o,o,o,O,o,o,o,o,W,u,u,u,W,u,W,u,u,u,W,o,o,o,O,W,W,o,o,o,o,W},
+                {W,o,W,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,o,o,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,W,W,W,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,W,W,W,W,u,W,W,W,W,W,o,W,W,W,W,W,o,W,W,o,W},
+                {W,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,W,W,W,W,W,W,u,W,W,W,W,W,o,W,W,o,W,W,W,W,W,o,W},
+                {W,o,W,W,W,o,W,W,W,W,W,W,W,W,u,W,W,W,W,W,o,W,W,o,W,W,W,W,W,o,W},
+                {W,o,W,W,W,o,o,o,o,W,W,u,u,u,u,u,u,u,u,u,o,W,W,o,o,o,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,W,u,W,W,W,W,W,u,W,W,o,W,W,o,W,W,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,W,u,W,u,u,u,W,u,W,W,o,W,W,o,W,W,o,W,W,o,W},
+                {W,o,o,o,o,o,W,W,o,u,u,u,W,u,u,u,W,u,W,W,o,o,o,o,W,W,o,o,o,o,W},
+                {W,W,W,W,W,o,W,W,W,W,W,u,G,u,u,u,W,u,W,W,W,W,W,u,W,W,W,W,W,o,W},
+                {W,W,W,W,W,o,W,W,W,W,W,u,G,u,u,u,W,u,W,W,W,W,W,u,W,W,W,W,W,o,W},
+                {W,o,o,o,o,o,W,W,o,u,u,u,W,u,u,u,W,u,W,W,o,o,o,o,W,W,o,o,o,o,W},
+                {W,o,W,W,W,o,W,W,o,W,W,u,W,u,u,u,W,u,W,W,o,W,W,o,W,W,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,W,u,W,W,W,W,W,u,W,W,o,W,W,o,W,W,o,W,W,o,W},
+                {W,o,W,W,W,o,o,o,o,W,W,u,u,u,u,u,u,u,u,u,o,W,W,o,o,o,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,W,W,W,W,W,W,u,W,W,W,W,W,o,W,W,o,W,W,W,W,W,o,W},
+                {W,o,W,W,W,o,W,W,W,W,W,W,W,W,u,W,W,W,W,W,o,W,W,o,W,W,W,W,W,o,W},
+                {W,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,W,W,W,W,u,W,W,W,W,W,o,W,W,W,W,W,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,W,W,W,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,o,o,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,o,W,W,o,W},
+                {W,o,o,o,O,o,o,o,o,W,u,u,u,W,u,W,u,u,u,W,o,o,o,O,W,W,o,o,o,o,W},
+                {W,W,W,W,W,W,W,W,W,W,u,u,u,W,P,W,u,u,u,W,W,W,W,W,W,W,W,W,W,W,W}
+                };
+
+        static Pacman * _pacman;
 
 
 
@@ -116,69 +149,39 @@ protected:
 
         inline static tile maze_base[28][31] =
                 {
-                        {W,W,W,W,W,W,W,W,W,W,W,W,u,u,u,W,P,W,u,u,u,W,W,W,W,W,W,W,W,W,W},
-                        {W,o,o,o,o,W,W,O,o,o,o,W,u,u,u,W,u,W,u,u,u,W,o,o,o,o,O,o,o,o,W},
-                        {W,o,W,W,o,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,o,o,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,W,W,W,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,W,W,W,W,W,o,W,W,W,W,W,u,W,W,W,W,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,W},
-                        {W,o,W,W,W,W,W,o,W,W,o,W,W,W,W,W,u,W,W,W,W,W,W,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,W,W,W,o,W,W,o,W,W,W,W,W,u,W,W,W,W,W,W,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,o,o,o,W,W,o,u,u,u,u,u,u,u,u,u,W,W,o,o,o,o,W,W,W,o,W},
-                        {W,o,W,W,o,W,W,o,W,W,o,W,W,u,W,W,W,W,W,u,W,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,W,W,o,W,W,o,W,W,u,W,u,u,u,W,u,W,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,o,o,o,W,W,o,o,o,o,W,W,u,W,u,u,u,W,u,u,u,o,W,W,o,o,o,o,o,W},
-                        {W,o,W,W,W,W,W,u,W,W,W,W,W,u,W,u,u,u,G,u,W,W,W,W,W,o,W,W,W,W,W},
-                        {W,o,W,W,W,W,W,u,W,W,W,W,W,u,W,u,u,u,G,u,W,W,W,W,W,o,W,W,W,W,W},
-                        {W,o,o,o,o,W,W,o,o,o,o,W,W,u,W,u,u,u,W,u,u,u,o,W,W,o,o,o,o,o,W},
-                        {W,o,W,W,o,W,W,o,W,W,o,W,W,u,W,u,u,u,W,u,W,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,W,W,o,W,W,o,W,W,u,W,W,W,W,W,u,W,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,o,o,o,W,W,o,u,u,u,u,u,u,u,u,u,W,W,o,o,o,o,W,W,W,o,W},
-                        {W,o,W,W,W,W,W,o,W,W,o,W,W,W,W,W,u,W,W,W,W,W,W,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,W,W,W,o,W,W,o,W,W,W,W,W,u,W,W,W,W,W,W,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,W},
-                        {W,o,W,W,o,W,W,W,W,W,o,W,W,W,W,W,u,W,W,W,W,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,W,W,W,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,o,o,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,o,o,o,W,W,O,o,o,o,W,u,u,u,W,u,W,u,u,u,W,o,o,o,o,O,o,o,o,W},
-                        {W,W,W,W,W,W,W,W,W,W,W,W,u,u,u,W,P,W,u,u,u,W,W,W,W,W,W,W,W,W,W}
+                {W,W,W,W,W,W,W,W,W,W,u,u,u,W,P,W,u,u,u,W,W,W,W,W,W,W,W,W,W,W,W},
+                {W,o,o,o,O,o,o,o,o,W,u,u,u,W,u,W,u,u,u,W,o,o,o,O,W,W,o,o,o,o,W},
+                {W,o,W,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,o,o,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,W,W,W,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,W,W,W,W,u,W,W,W,W,W,o,W,W,W,W,W,o,W,W,o,W},
+                {W,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,W,W,W,W,W,W,u,W,W,W,W,W,o,W,W,o,W,W,W,W,W,o,W},
+                {W,o,W,W,W,o,W,W,W,W,W,W,W,W,u,W,W,W,W,W,o,W,W,o,W,W,W,W,W,o,W},
+                {W,o,W,W,W,o,o,o,o,W,W,u,u,u,u,u,u,u,u,u,o,W,W,o,o,o,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,W,u,W,W,W,W,W,u,W,W,o,W,W,o,W,W,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,W,u,W,u,u,u,W,u,W,W,o,W,W,o,W,W,o,W,W,o,W},
+                {W,o,o,o,o,o,W,W,o,u,u,u,W,u,u,u,W,u,W,W,o,o,o,o,W,W,o,o,o,o,W},
+                {W,W,W,W,W,o,W,W,W,W,W,u,G,u,u,u,W,u,W,W,W,W,W,u,W,W,W,W,W,o,W},
+                {W,W,W,W,W,o,W,W,W,W,W,u,G,u,u,u,W,u,W,W,W,W,W,u,W,W,W,W,W,o,W},
+                {W,o,o,o,o,o,W,W,o,u,u,u,W,u,u,u,W,u,W,W,o,o,o,o,W,W,o,o,o,o,W},
+                {W,o,W,W,W,o,W,W,o,W,W,u,W,u,u,u,W,u,W,W,o,W,W,o,W,W,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,W,u,W,W,W,W,W,u,W,W,o,W,W,o,W,W,o,W,W,o,W},
+                {W,o,W,W,W,o,o,o,o,W,W,u,u,u,u,u,u,u,u,u,o,W,W,o,o,o,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,W,W,W,W,W,W,u,W,W,W,W,W,o,W,W,o,W,W,W,W,W,o,W},
+                {W,o,W,W,W,o,W,W,W,W,W,W,W,W,u,W,W,W,W,W,o,W,W,o,W,W,W,W,W,o,W},
+                {W,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,W,W,W,W,u,W,W,W,W,W,o,W,W,W,W,W,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,W,W,W,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,o,o,o,W,W,o,W},
+                {W,o,W,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,o,W,W,o,W},
+                {W,o,o,o,O,o,o,o,o,W,u,u,u,W,u,W,u,u,u,W,o,o,o,O,W,W,o,o,o,o,W},
+                {W,W,W,W,W,W,W,W,W,W,u,u,u,W,P,W,u,u,u,W,W,W,W,W,W,W,W,W,W,W,W}
                 };
 
-        inline static tile maze_running[28][31] =
-                {
-                        {W,W,W,W,W,W,W,W,W,W,W,W,u,u,u,W,P,W,u,u,u,W,W,W,W,W,W,W,W,W,W},
-                        {W,o,o,o,o,W,W,O,o,o,o,W,u,u,u,W,u,W,u,u,u,W,o,o,o,o,O,o,o,o,W},
-                        {W,o,W,W,o,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,o,o,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,W,W,W,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,W,W,W,W,W,o,W,W,W,W,W,u,W,W,W,W,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,W},
-                        {W,o,W,W,W,W,W,o,W,W,o,W,W,W,W,W,u,W,W,W,W,W,W,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,W,W,W,o,W,W,o,W,W,W,W,W,u,W,W,W,W,W,W,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,o,o,o,W,W,o,u,u,u,u,u,u,u,u,u,W,W,o,o,o,o,W,W,W,o,W},
-                        {W,o,W,W,o,W,W,o,W,W,o,W,W,u,W,W,W,W,W,u,W,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,W,W,o,W,W,o,W,W,u,W,u,u,u,W,u,W,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,o,o,o,W,W,o,o,o,o,W,W,u,W,u,u,u,W,u,u,u,o,W,W,o,o,o,o,o,W},
-                        {W,o,W,W,W,W,W,u,W,W,W,W,W,u,W,u,u,u,G,u,W,W,W,W,W,o,W,W,W,W,W},
-                        {W,o,W,W,W,W,W,u,W,W,W,W,W,u,W,u,u,u,G,u,W,W,W,W,W,o,W,W,W,W,W},
-                        {W,o,o,o,o,W,W,o,o,o,o,W,W,u,W,u,u,u,W,u,u,u,o,W,W,o,o,o,o,o,W},
-                        {W,o,W,W,o,W,W,o,W,W,o,W,W,u,W,u,u,u,W,u,W,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,W,W,o,W,W,o,W,W,u,W,W,W,W,W,u,W,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,o,o,o,W,W,o,u,u,u,u,u,u,u,u,u,W,W,o,o,o,o,W,W,W,o,W},
-                        {W,o,W,W,W,W,W,o,W,W,o,W,W,W,W,W,u,W,W,W,W,W,W,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,W,W,W,o,W,W,o,W,W,W,W,W,u,W,W,W,W,W,W,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,W},
-                        {W,o,W,W,o,W,W,W,W,W,o,W,W,W,W,W,u,W,W,W,W,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,W,W,W,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,o,o,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,W,W,o,W,W,o,W,W,o,W,u,u,u,W,u,W,u,u,u,W,o,W,W,o,W,W,W,o,W},
-                        {W,o,o,o,o,W,W,O,o,o,o,W,u,u,u,W,u,W,u,u,u,W,o,o,o,o,O,o,o,o,W},
-                        {W,W,W,W,W,W,W,W,W,W,W,W,u,u,u,W,P,W,u,u,u,W,W,W,W,W,W,W,W,W,W}
-                };
 
-        static Pacman * _pacman;
+
+
         static Thread * _input;
         //static Ghost * _ghost[4];
         static Ghost *ghost_b;
