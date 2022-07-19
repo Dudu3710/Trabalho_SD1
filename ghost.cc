@@ -8,7 +8,7 @@ Ghost::Ghost(int cor, int x, int y) {
     cor_ghost = cor;
     x_ghost = x;
     y_ghost = y;
-    vel = 1;
+    vel = 2;
     //window_open = true;
     state_ghost = READY;
     ghost_direction = UP;

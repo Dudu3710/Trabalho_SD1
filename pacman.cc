@@ -16,16 +16,12 @@ Pacman::directions pac_directions;
 Pacman::state pac_state;
 
 Pacman::Pacman() {;
-// [15][24]
     Pacman::x_pacman = 208;
     Pacman::y_pacman = 368;
-    Pacman::vel = 1;
+    Pacman::vel = 2;
     pac_directions = UP;
     pac_state = READY;
-    // direction_pacman = NIL;
     pacman_thread = new Thread(Pacman::pacman_run);
-    //pacman.pacman_run(12, pacman.pacman_thread);
-    
 }
 
 Pacman::~Pacman() {
