@@ -48,9 +48,6 @@ public:
 
     combat combat_ghost;
     state state_ghost;
-    directions direction_ghost;
-
-    //static Thread *ghost_thread;
 
 protected:
 

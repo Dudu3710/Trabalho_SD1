@@ -67,6 +67,4 @@ void Ghost::run() {
     }
 }
 
-
-
 __END_API
