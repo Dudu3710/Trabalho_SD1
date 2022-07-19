@@ -8,6 +8,7 @@ Ghost::Ghost(int cor, int x, int y) {
     cor_ghost = cor;
     x_ghost = x;
     y_ghost = y;
+    vel = 1;
     //window_open = true;
     state_ghost = READY;
     direction_ghost = DOWN;
@@ -23,11 +24,13 @@ void Ghost::ghost_run(int cor) {
 
     run();
     //Draw::draw_ghosts(cor_ghost, x_ghost, y_ghost);
-    printf("GHOST COR %d PORRA\n",cor);
+    //printf("GHOST COR %d PORRA\n",cor);
 
 };
 
 void Ghost::run() {
+
+
 
 }
 

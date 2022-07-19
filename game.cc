@@ -168,7 +168,7 @@ void Game::criar_ghost(int cor) {
     switch (cor)
     {
     case (0):
-        ghost_b = new Ghost(0, 190, 150);
+        ghost_b = new Ghost(0, 192, 232);
         while (_window->isOpen()){
             ghost_b->ghost_run(cor);
             ghost_thread_b->yield();
@@ -176,7 +176,7 @@ void Game::criar_ghost(int cor) {
         ghost_thread_b->thread_exit(9);
         break;
     case (1):
-        ghost_p = new Ghost(1, 195, 150);
+        ghost_p = new Ghost(1, 208, 232);
         while (_window->isOpen()){
             ghost_p->ghost_run(cor);
             ghost_thread_p ->yield();
@@ -184,7 +184,7 @@ void Game::criar_ghost(int cor) {
         ghost_thread_p->thread_exit(10);
         break;
     case (2):
-        ghost_r = new Ghost(2, 200, 150);
+        ghost_r = new Ghost(2, 224, 232);
         while (_window->isOpen()){
             ghost_r->ghost_run(cor);
             ghost_thread_r ->yield();
@@ -192,7 +192,7 @@ void Game::criar_ghost(int cor) {
         ghost_thread_r->thread_exit(11);
         break;
     case (3):
-        ghost_y = new Ghost(3, 205, 150);
+        ghost_y = new Ghost(3, 240, 232);
         while (_window->isOpen()){
             ghost_y->ghost_run(cor);
             ghost_thread_y->yield();

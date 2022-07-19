@@ -36,6 +36,7 @@ public:
     int cor_ghost;
     int x_ghost;
     int y_ghost;
+    int vel;
 
     bool window_open;
 
