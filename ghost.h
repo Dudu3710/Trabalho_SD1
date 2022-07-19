@@ -2,6 +2,7 @@
 #define ghost_h
 
 #include <iostream>
+#include <random>
 #include "traits.h"
 #include "thread.h"
 #include "cpu.h"
@@ -38,6 +39,11 @@ public:
     int y_ghost;
     int vel;
 
+    int x_antigo;
+    int y_antigo;
+
+    directions ghost_direction;
+
     bool window_open;
 
     combat combat_ghost;
@@ -46,17 +52,10 @@ public:
 
     //static Thread *ghost_thread;
 
-
-
 protected:
 
 
-
-
-
-
 private:
-
 
 
 };

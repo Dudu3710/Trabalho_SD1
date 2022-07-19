@@ -205,20 +205,5 @@ void Game::criar_ghost(int cor) {
 
 }
 
-// void Game::desenhar() {
-
-// }
-
-// void Game::ler_input() {
-
-// }
-
-
-
-
-
-
-
-
 
 __END_API

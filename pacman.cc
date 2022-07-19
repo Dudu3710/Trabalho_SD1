@@ -65,64 +65,27 @@ void Pacman::move() {
     int i = round((y_pacman+7)/16);
     int j = round((x_pacman+7)/16);
     Game::tile tile_pac = Game::maze_running[i][j];
-    printf("PACTILE = %d\n",tile_pac);
-    printf("I = %d\n",i);
-    printf("J = %d\n",j);
+    // printf("PACTILE = %d\n",tile_pac);
+    // printf("I = %d\n",i);
+    // printf("J = %d\n",j);
 
-    
-    if (pac_directions == UP) {
-        if(tile_pac == 0) {
-            y_pacman = y_antigo;
-            x_pacman = x_antigo;
-        } else {
-            x_antigo = x_pacman;
-            y_antigo = y_pacman;
+    if (tile_pac == 0) {
+        y_pacman = y_antigo;
+        x_pacman = x_antigo;
+    } else {
+        x_antigo = x_pacman;
+        y_antigo = y_pacman;
+        if (pac_directions == UP) {
             y_pacman -= vel;
-        }
-
-        
-        //printf("CIMAAAAAAA\n");
-
-    }
-    else if (pac_directions == LEFT) {
-        if (tile_pac == 0) {
-            y_pacman = y_antigo;
-            x_pacman = x_antigo;
-        }else {
-            x_antigo = x_pacman;
-            y_antigo = y_pacman;
+        } else if (pac_directions == LEFT) {
             x_pacman -= vel;
-        }
-
-
-        //printf("ESQUERDA\n");
-    }
-    else if (pac_directions == RIGHT) {
-        if (tile_pac == 0) {
-            y_pacman = y_antigo;
-            x_pacman = x_antigo;
-        } else {
-            x_antigo = x_pacman;
-            y_antigo = y_pacman;
+        } else if (pac_directions == RIGHT) {
             x_pacman += vel;
-        }
-        
-
-
-        //printf("DIREITAAA\n");
-    }
-    else if (pac_directions == DOWN) {
-        if (tile_pac == 0) {
-            y_pacman = y_antigo;
-            x_pacman = x_antigo;
-        }else {
-            x_antigo = x_pacman;
-            y_antigo = y_pacman;
+        } else if (pac_directions == DOWN) {
             y_pacman += vel;
         }
-
-    
     }
+
     // Atualizar Pontos
     if (tile_pac == 4) {
         Game::maze_running[i][j] = Game::e;
@@ -132,14 +95,9 @@ void Pacman::move() {
         Game::maze_running[i][j] = Game::E;
     }
 
-
-
-        //printf("VAIXOXO\n");   
-
-
 }
 
-void Pacman::set_direction(int dir){
+void Pacman::set_direction(int dir) {
     if (dir == 0) {
         pac_directions = LEFT;
     }
