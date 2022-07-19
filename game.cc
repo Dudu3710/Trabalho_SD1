@@ -26,11 +26,11 @@ Ghost * Game::ghost_y;
 Draw * Game::_drawing;
 sf::RenderWindow * Game::_window;
 Semaphore Game::_semaphore;
-// Thread* Game::pacman_thread;
-// Thread* Game::ghost_thread_b;
-// Thread* Game::ghost_thread_p;
-// Thread* Game::ghost_thread_r;
-// Thread* Game::ghost_thread_y;
+//Thread* Game::pacman_thread;
+Thread* Game::ghost_thread_b;
+Thread* Game::ghost_thread_p;
+Thread* Game::ghost_thread_r;
+Thread* Game::ghost_thread_y;
 // Thread* Game::_drawing_thread;
 Thread* Game::_input;
  //Thread* Game::_input_thread = null
@@ -50,19 +50,19 @@ Game::Game() {
 
 
     _pacman = new Pacman();
-    ghost_b = new Ghost(0, 190, 150);
-    ghost_p = new Ghost(1, 195, 150);
-    ghost_r = new Ghost(2, 200, 150);
-    ghost_y = new Ghost(3, 205, 150);
+    // ghost_b = new Ghost(0, 190, 150);
+    // ghost_p = new Ghost(1, 195, 150);
+    // ghost_r = new Ghost(2, 200, 150);
+    // ghost_y = new Ghost(3, 205, 150);
     _drawing = new Draw();
 
     _input = new Thread(input_handler, &window);
 
     // pacman_thread = new Thread(criar_pacman);
-    // ghost_thread_b = new Thread(criar_ghost,0);
-    // ghost_thread_p = new Thread(criar_ghost,1);
-    // ghost_thread_r = new Thread(criar_ghost,2);
-    // ghost_thread_y = new Thread(criar_ghost,3);
+    ghost_thread_b = new Thread(criar_ghost,0);
+    ghost_thread_p = new Thread(criar_ghost,1);
+    ghost_thread_r = new Thread(criar_ghost,2);
+    ghost_thread_y = new Thread(criar_ghost,3);
     // _drawing_thread = new Thread(desenhar);
     // //_input_thread = new Thread(ler_input);
 
@@ -84,10 +84,10 @@ Game::Game() {
     _drawing->_draw->join();
     _input->join();
     _pacman->pacman_thread->join();
-    ghost_b->ghost_thread->join();
-    ghost_p->ghost_thread->join();
-    ghost_r->ghost_thread->join();
-    ghost_y->ghost_thread->join();
+    ghost_thread_b->join();
+    ghost_thread_p->join();
+    ghost_thread_r->join();
+    ghost_thread_y->join();
 
 
 
@@ -144,6 +144,7 @@ void Game::input_handler(sf::RenderWindow * _window){
         
         _window->clear();
 }
+    _input->thread_exit(8);
 }
 
 Game::tile Game::get_tile(int x, int y) {
@@ -162,47 +163,52 @@ Game::tile Game::get_tile(int x, int y) {
 //     pacman_thread->thread_exit(1);
 // }
 
-// void Game::criar_ghost(int cor) {
+void Game::criar_ghost(int cor) {
 
-//     switch (cor)
-//     {
-//     case (0):
-//         while (_window.isOpen()){
-//             _semaphore.p();
-//             ghost_b->ghost_run(cor);
-//             _semaphore.v();
-//         }
-//         ghost_thread_b->thread_exit(5);
-//         break;
-//     case (1):
-//         while (_window.isOpen()){
-//             _semaphore.p();
-//             ghost_p->ghost_run(cor);
-//             _semaphore.v();
-//         }
-//         ghost_thread_p->thread_exit(6);
-//         break;
-//     case (2):
-//         while (_window.isOpen()){
-//             _semaphore.p();
-//             ghost_r->ghost_run(cor);
-//             _semaphore.v();
-//         }
-//         ghost_thread_r->thread_exit(7);
-//         break;
-//     case (3):
-//         while (_window.isOpen()){
-//             _semaphore.p();
-//             ghost_y->ghost_run(cor);
-//             _semaphore.v();
-//         }
-//         ghost_thread_y->thread_exit(8);
-//         break;
-//     default:
-//         break;
-//     }
+    switch (cor)
+    {
+    case (0):
+        ghost_b = new Ghost(0, 190, 150);
+        _drawing->_ghost_b = ghost_b;
+        while (_window->isOpen()){
+            ghost_b->ghost_run(cor);
+            ghost_thread_b->yield();
+        }
+        ghost_thread_b->thread_exit(9);
+        break;
+    case (1):
+        ghost_p = new Ghost(1, 195, 150);
+        _drawing->_ghost_p = ghost_p;
+        while (_window->isOpen()){
+            ghost_p->ghost_run(cor);
+            ghost_thread_p ->yield();
+        }
+        ghost_thread_p->thread_exit(10);
+        break;
+    case (2):
+        ghost_r = new Ghost(2, 200, 150);
+        _drawing->_ghost_r = ghost_r;
+        while (_window->isOpen()){
+            ghost_r->ghost_run(cor);
+            ghost_thread_r ->yield();
+        }
+        ghost_thread_r->thread_exit(11);
+        break;
+    case (3):
+        ghost_y = new Ghost(3, 205, 150);
+        _drawing->_ghost_y = ghost_y;
+        while (_window->isOpen()){
 
-// }
+            ghost_y->ghost_run(cor);
+            ghost_thread_y->yield();
+        }
+        ghost_thread_y->thread_exit(12);
+        break;
+    default:
+        break;
+    }
+
+}
 
 // void Game::desenhar() {
 

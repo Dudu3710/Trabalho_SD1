@@ -6,6 +6,7 @@
 #include "thread.h"
 #include "game.h"
 #include "debug.h"
+#include "ghost.h"
 #include <png.h>
 #include <SFML/Graphics.hpp>
 
@@ -29,6 +30,18 @@ public:
 
     static void read_maze_and_draw();
 
+    static void draw_pacman();
+
+    void draw_ghost_b();
+    static void draw_ghost_p();
+    static void draw_ghost_r();
+    static void draw_ghost_y();
+
+    Ghost* _ghost_r;
+    Ghost* _ghost_b;
+    Ghost* _ghost_y;
+    Ghost* _ghost_p;
+
 protected:
 
 
@@ -45,16 +58,23 @@ private:
     static sf::Sprite pill_sprites;
     static sf::Sprite life_sprites;
     static sf::Sprite bigpill_sprites;
-    static sf::Sprite pacman_sprites[3];
+    //static sf::Sprite pacman_sprites[3];
     static sf::Sprite pacman_dead_sprites[11];
     static sf::Sprite fruit_sprites[2];
     static sf::Sprite num_sprites[10];
     static sf::Sprite eye_sprites[4];
-    static sf::Sprite ghost_r_sprites[2];
-    static sf::Sprite ghost_p_sprites[2];
-    static sf::Sprite ghost_b_sprites[2];
     static sf::Sprite pac_0_sprites;
+    static sf::Sprite pac_1_sprites;
+    static sf::Sprite pac_2_sprites;
     static sf::Sprite ghost_r_0_sprites;
+    static sf::Sprite ghost_r_1_sprites;
+    static sf::Sprite ghost_p_0_sprites;
+    static sf::Sprite ghost_p_1_sprites;
+    static sf::Sprite ghost_b_0_sprites;
+    static sf::Sprite ghost_b_1_sprites;
+    static sf::Sprite ghost_y_0_sprites;
+    static sf::Sprite ghost_y_1_sprites;
+
     //static sf::Sprite ghos
 
     sf::Texture maze_tex;

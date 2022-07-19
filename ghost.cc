@@ -2,16 +2,16 @@
 
 __BEGIN_API
 
-Thread * Ghost::ghost_thread;
+//Thread * Ghost::ghost_thread;
 
 Ghost::Ghost(int cor, int x, int y) {
     cor_ghost = cor;
     x_ghost = x;
     y_ghost = y;
-    window_open = true;
+    //window_open = true;
     state_ghost = READY;
-    direction_ghost = NIL;
-    ghost_thread = new Thread(ghost_run, cor);
+    direction_ghost = DOWN;
+    //ghost_thread = new Thread(ghost_run, cor);
     //ghost_run(cor, ghost_thread);
 };
 
@@ -21,15 +21,15 @@ Ghost::~Ghost() {
 
 void Ghost::ghost_run(int cor) {
 
-    while(Game::_window->isOpen()){
-
-        //printf("GOHOST\n");
-        //sleep(2);
-        ghost_thread->yield();
-    }
-    ghost_thread->thread_exit(5);
+    run();
+    //Draw::draw_ghosts(cor_ghost, x_ghost, y_ghost);
+    printf("GHOST COR %d PORRA\n",cor);
 
 };
+
+void Ghost::run() {
+
+}
 
 
 

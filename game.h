@@ -146,6 +146,11 @@ public:
 
         static Pacman * _pacman;
 
+        static Thread * ghost_thread_b;
+        static Thread * ghost_thread_p;
+        static Thread * ghost_thread_r;
+        static Thread * ghost_thread_y;
+
 
 
 

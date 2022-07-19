@@ -6,12 +6,31 @@ __BEGIN_API
 Thread* Draw::_draw;
 //sf::RenderWindow * Game::_window;
 sf::Sprite Draw::pac_0_sprites;
+sf::Sprite Draw::pac_1_sprites;
+sf::Sprite Draw::pac_2_sprites;
 sf::Sprite Draw::ghost_r_0_sprites;
+sf::Sprite Draw::ghost_r_1_sprites;
+sf::Sprite Draw::ghost_p_0_sprites;
+sf::Sprite Draw::ghost_p_1_sprites;
+sf::Sprite Draw::ghost_b_0_sprites;
+sf::Sprite Draw::ghost_b_1_sprites;
+sf::Sprite Draw::ghost_y_0_sprites;
+sf::Sprite Draw::ghost_y_1_sprites;
 sf::Sprite Draw::maze_sprites;
 sf::Sprite Draw::pill_sprites;
 sf::Sprite Draw::bigpill_sprites;
 
+
+// Ghost * _ghost_r = nullptr;
+// //Ghost * _ghost_b = nullptr;
+// Ghost * _ghost_y = nullptr;
+// Ghost * _ghost_p = nullptr;
+
 Draw::Draw() {
+    Ghost * _ghost_r = nullptr;
+    Ghost * _ghost_b = nullptr;
+    Ghost * _ghost_y = nullptr;
+    Ghost * _ghost_p = nullptr;
     _draw = new Thread(Draw::draw_run);
     //load bin and textures
     load_and_bind_textures();
@@ -24,8 +43,15 @@ void Draw::draw_run(){
         Game::_window->clear();
         Game::_window->draw(maze_sprites);
 
-        pac_0_sprites.setPosition(Pacman::x_pacman, Pacman::y_pacman);
-        Game::_window->draw(pac_0_sprites);
+        draw_pacman();
+
+        draw_ghost_b();
+        draw_ghost_p();
+        draw_ghost_r();
+        draw_ghost_y();
+
+        //pac_0_sprites.setPosition(Pacman::x_pacman, Pacman::y_pacman);
+        //Game::_window->draw(pac_0_sprites);
 
         read_maze_and_draw();
         Game::maze_running;
@@ -34,6 +60,7 @@ void Draw::draw_run(){
         //printf("SAI DO DEAW");
         _draw->yield();
     }
+    _draw->thread_exit(7);
 }
 
 void Draw::read_maze_and_draw() {
@@ -55,6 +82,42 @@ void Draw::read_maze_and_draw() {
     }
 
 }
+void Draw::draw_pacman(){
+    if (Pacman::contador %3 == 0) {
+        pac_0_sprites.setPosition(Pacman::x_pacman, Pacman::y_pacman);
+        Game::_window->draw(pac_0_sprites);     
+    }
+    else if (Pacman::contador %3 == 1) {
+        pac_1_sprites.setPosition(Pacman::x_pacman, Pacman::y_pacman);
+        Game::_window->draw(pac_1_sprites);     
+    }
+    else {
+        pac_2_sprites.setPosition(Pacman::x_pacman, Pacman::y_pacman);
+        Game::_window->draw(pac_2_sprites);     
+    }
+}
+
+void Draw::draw_ghost_b() {
+    ghost_b_0_sprites.setPosition(_ghost_b->x_ghost, _ghost_b->y_ghost);
+    //Game::_window->draw(ghost_b_0_sprites);     
+
+}
+
+void Draw::draw_ghost_p() {
+
+
+}
+
+void Draw::draw_ghost_r() {
+
+
+}
+
+void Draw::draw_ghost_y() {
+
+
+}
+
 void Draw::load_and_bind_textures()
 {
     // Bind map textures    
@@ -71,9 +134,9 @@ void Draw::load_and_bind_textures()
     pac_0_tex.loadFromFile("sprites/pacman/0.png");
     pac_0_sprites.setTexture(pac_0_tex);
     pac_1_tex.loadFromFile("sprites/pacman/1.png");
-    pac_1_sprite.setTexture(pac_1_tex);
+    pac_1_sprites.setTexture(pac_1_tex);
     pac_2_tex.loadFromFile("sprites/pacman/2.png");
-    pac_2_sprite.setTexture(pac_2_tex);
+    pac_2_sprites.setTexture(pac_2_tex);
     dead_0_tex.loadFromFile("sprites/pacman/d-0.png");
     dead_0_sprite.setTexture(dead_0_tex);
     dead_1_tex.loadFromFile("sprites/pacman/d-1.png");
@@ -101,19 +164,19 @@ void Draw::load_and_bind_textures()
     ghost_r_0_tex.loadFromFile("sprites/ghosts/r-0.png");
     ghost_r_0_sprites.setTexture(ghost_r_0_tex);
     ghost_r_1_tex.loadFromFile("sprites/ghosts/r-1.png");
-    ghost_r_1_sprite.setTexture(ghost_r_1_tex);
+    ghost_r_1_sprites.setTexture(ghost_r_1_tex);
     ghost_p_0_tex.loadFromFile("sprites/ghosts/p-0.png");
-    ghost_p_0_sprite.setTexture(ghost_p_0_tex);
+    ghost_p_0_sprites.setTexture(ghost_p_0_tex);
     ghost_p_1_tex.loadFromFile("sprites/ghosts/p-1.png");
-    ghost_p_1_sprite.setTexture(ghost_p_1_tex);
+    ghost_p_1_sprites.setTexture(ghost_p_1_tex);
     ghost_b_0_tex.loadFromFile("sprites/ghosts/b-0.png");
-    ghost_b_0_sprite.setTexture(ghost_b_0_tex);
+    ghost_b_0_sprites.setTexture(ghost_b_0_tex);
     ghost_b_1_tex.loadFromFile("sprites/ghosts/b-1.png");
-    ghost_b_1_sprite.setTexture(ghost_b_1_tex);
+    ghost_b_1_sprites.setTexture(ghost_b_1_tex);
     ghost_y_0_tex.loadFromFile("sprites/ghosts/y-0.png");
-    ghost_y_0_sprite.setTexture(ghost_y_0_tex);
+    ghost_y_0_sprites.setTexture(ghost_y_0_tex);
     ghost_y_1_tex.loadFromFile("sprites/ghosts/y-1.png");
-    ghost_y_1_sprite.setTexture(ghost_y_1_tex);
+    ghost_y_1_sprites.setTexture(ghost_y_1_tex);
     ghost_scared_0_tex.loadFromFile("sprites/ghosts/s-0.png");
     ghost_scared_0_sprite.setTexture(ghost_scared_0_tex);
     ghost_scared_1_tex.loadFromFile("sprites/ghosts/s-1.png");

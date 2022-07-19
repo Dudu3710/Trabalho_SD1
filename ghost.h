@@ -14,7 +14,7 @@ class Ghost
 
 public:
 
-    typedef enum {LEFT, UP, RIGHT, DOWN, NIL} directions;
+    typedef enum {LEFT, UP, RIGHT, DOWN} directions;
     typedef enum {READY, RUNNING, FINISHING, PAUSED} state;
     typedef enum {FOLLOWING, IDLE} combat;
 
@@ -27,9 +27,11 @@ public:
     Ghost(int cor, int x, int y);
 
     ~Ghost();
-    static void join(){ if(ghost_thread){ ghost_thread->join();}} 
+    //static void join(){ if(ghost_thread){ ghost_thread->join();}} 
 
-    static void ghost_run(int cor);
+    void ghost_run(int cor);
+
+    void run();
 
     int cor_ghost;
     int x_ghost;
@@ -41,7 +43,7 @@ public:
     state state_ghost;
     directions direction_ghost;
 
-    static Thread *ghost_thread;
+    //static Thread *ghost_thread;
 
 
 

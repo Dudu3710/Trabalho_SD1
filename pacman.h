@@ -25,7 +25,11 @@ public:
     static int x_pacman;
     static int y_pacman;
     static int contador;
+    static int contador_princ;
     static int vel;
+
+    static int x_antigo;
+    static int y_antigo;
 
     static void move();
     bool window_open;
