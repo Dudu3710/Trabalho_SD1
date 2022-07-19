@@ -61,9 +61,10 @@ void Pacman::move() {
     int j = round(y_pacman/16);
     printf("I = %d\n",i);
     printf("J = %d\n",j);
+
     if (pac_directions == UP) {
         //Game::tile_pac = Game::get_tile(x_pacman,y_pacman);
-        Game::tile up_tile = Game::maze_running[i][j-1];
+        Game::tile up_tile = Game::maze_running[i-1][j];
         printf("UPTILE = %d\n",up_tile);
         if (up_tile != W) {
             y_pacman -= vel;
@@ -73,7 +74,7 @@ void Pacman::move() {
 
     }
     else if (pac_directions == LEFT) {
-        Game::tile left_tile = Game::maze_running[i+1][j];
+        Game::tile left_tile = Game::maze_running[i][j-1];
         printf("LEFTTILE = %d\n",left_tile);
         if (left_tile != W) {
             x_pacman -= vel;
@@ -81,7 +82,7 @@ void Pacman::move() {
         //printf("ESQUERDA\n");
     }
     else if (pac_directions == RIGHT) {
-        Game::tile right_tile = Game::maze_running[i-1][j];
+        Game::tile right_tile = Game::maze_running[i][j+1];
         printf("RIHTTILE = %d\n",right_tile);
         if (right_tile != W) {
             x_pacman += vel;
@@ -89,7 +90,7 @@ void Pacman::move() {
         //printf("DIREITAAA\n");
     }
     else if (pac_directions == DOWN) {
-        Game::tile down_tile = Game::maze_running[i][j+1];
+        Game::tile down_tile = Game::maze_running[i+1][j];
         printf("DOWNTILE = %d\n",down_tile);
         if (down_tile != W) {
             y_pacman += vel;

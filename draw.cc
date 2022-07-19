@@ -36,18 +36,18 @@ void Draw::draw_run(){
 }
 
 void Draw::read_maze_and_draw() {
-    for (int i = 0 ; i<28; i++) {
-        for (int j = 0; j < 31 ; j++) {
+    for (int i = 0 ; i < 31; i++) {
+        for (int j = 0; j < 28 ; j++) {
             if (Game::maze_running[i][j] == W) {
-                ghost_r_0_sprites.setPosition(i*16,j*16);
+                ghost_r_0_sprites.setPosition(j*16,i*16);
                 Game::_window->draw(ghost_r_0_sprites);
             } 
             if (Game::maze_running[i][j] == O) {
-                bigpill_sprites.setPosition(i*16,j*16);
+                bigpill_sprites.setPosition(j*16,i*16);
                 Game::_window->draw(bigpill_sprites);
             }
             if (Game::maze_running[i][j] == o) {
-                pill_sprites.setPosition(i*16,j*16);
+                pill_sprites.setPosition(j*16,i*16);
                 Game::_window->draw(pill_sprites);
             }
             
