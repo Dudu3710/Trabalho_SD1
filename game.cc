@@ -147,8 +147,8 @@ void Game::input_handler(sf::RenderWindow * _window){
 }
 
 Game::tile Game::get_tile(int x, int y) {
-    int i = round(x/16);
-    int j = round(y/16);
+    int i = round(y/16);
+    int j = round(x/16);
 
     return maze_running[i][j];
 }

@@ -41,7 +41,7 @@ void Pacman::pacman_run() {
         tile_pac = Game::get_tile(x_pacman,y_pacman);
 
         move();
-        //[13][23]
+        //[23][13]
         printf("PACTILE = %d\n",tile_pac);
 
 
@@ -57,8 +57,8 @@ void Pacman::pacman_run() {
 }
 
 void Pacman::move() {
-    int i = round(x_pacman/16);
-    int j = round(y_pacman/16);
+    int i = round(y_pacman/16);
+    int j = round(x_pacman/16);
     printf("I = %d\n",i);
     printf("J = %d\n",j);
 
@@ -82,6 +82,7 @@ void Pacman::move() {
         //printf("ESQUERDA\n");
     }
     else if (pac_directions == RIGHT) {
+        printf("TILE CERTA = %d",Game::maze_running[15][23]);
         Game::tile right_tile = Game::maze_running[i][j+1];
         printf("RIHTTILE = %d\n",right_tile);
         if (right_tile != W) {

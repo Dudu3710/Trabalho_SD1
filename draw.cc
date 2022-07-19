@@ -24,11 +24,12 @@ void Draw::draw_run(){
         Game::_window->clear();
         Game::_window->draw(maze_sprites);
 
+        pac_0_sprites.setPosition(Pacman::x_pacman, Pacman::y_pacman);
+        Game::_window->draw(pac_0_sprites);
+
         read_maze_and_draw();
         Game::maze_running;
 
-        pac_0_sprites.setPosition(Pacman::x_pacman, Pacman::y_pacman);
-        Game::_window->draw(pac_0_sprites);
         Game::_window->display();
         //printf("SAI DO DEAW");
         _draw->yield();
@@ -39,8 +40,7 @@ void Draw::read_maze_and_draw() {
     for (int i = 0 ; i < 31; i++) {
         for (int j = 0; j < 28 ; j++) {
             if (Game::maze_running[i][j] == W) {
-                ghost_r_0_sprites.setPosition(j*16,i*16);
-                Game::_window->draw(ghost_r_0_sprites);
+                
             } 
             if (Game::maze_running[i][j] == O) {
                 bigpill_sprites.setPosition(j*16,i*16);
