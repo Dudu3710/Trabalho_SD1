@@ -57,11 +57,11 @@ void Pacman::move() {
     // printf("I = %d\n",i);
     // printf("J = %d\n",j);
 
-    if (tile_pac == 0 || tile_pac == 1) {
+    if (tile_pac == 0 || tile_pac == 1) {  // walls or prison gates
         y_pacman = y_antigo;
         x_pacman = x_antigo;
     } else {
-        if (tile_pac == 2) {
+        if (tile_pac == 2) {  // portals
             if (x_pacman < 16) {
                 x_pacman = 432;
             } else if (x_pacman > 432) {

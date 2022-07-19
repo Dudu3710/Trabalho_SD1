@@ -36,7 +36,7 @@ void Ghost::run() {
     // printf("I = %d\n",i);
     // printf("J = %d\n",j);
 
-    if (tile_ghost == 0 || (tile_ghost == 1 && ghost_direction != UP)) {
+    if (tile_ghost == 0 || (tile_ghost == 1 && ghost_direction != UP)) {  // walls or prison gates
         y_ghost = y_antigo;
         x_ghost = x_antigo;
         
@@ -46,7 +46,7 @@ void Ghost::run() {
         std::uniform_int_distribution dist{0, 3}; // set min and max
         ghost_direction = static_cast<directions>(dist(gen));
     } else {
-        if (tile_ghost == 2) {
+        if (tile_ghost == 2) {  // portals
             if (x_ghost < 16) {
                 x_ghost = 432;
             } else if (x_ghost > 432) {
