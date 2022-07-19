@@ -61,7 +61,7 @@ private:
     static sf::Sprite ghost_y_0_sprites;
     static sf::Sprite ghost_y_1_sprites;
 
-    //static sf::Sprite ghos
+    //static sf::Sprite ghost
 
     sf::Texture maze_tex;
     sf::Sprite maze_sprite;

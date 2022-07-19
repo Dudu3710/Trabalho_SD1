@@ -32,49 +32,27 @@ void Ghost::run() {
     int i = round((y_ghost+7)/16);
     int j = round((x_ghost+7)/16);
     Game::tile tile_ghost = Game::maze_running[i][j];
-    printf("GHOST%dTILE = %d\n",cor_ghost,tile_ghost);
-    printf("I = %d\n",i);
-    printf("J = %d\n",j);
+    // printf("GHOST%dTILE = %d\n",cor_ghost,tile_ghost);
+    // printf("I = %d\n",i);
+    // printf("J = %d\n",j);
 
-    if (tile_ghost == 0) {
+    if (tile_ghost == 0 || (tile_ghost == 1 && ghost_direction != UP)) {
         y_ghost = y_antigo;
         x_ghost = x_antigo;
-        // Change ghost_direction clockwise
-        if (ghost_direction == UP) {
-            ghost_direction = RIGHT;
-        } else if (ghost_direction == RIGHT) {
-            ghost_direction = DOWN;
-        } else if (ghost_direction == DOWN) {
-            ghost_direction = LEFT;
-        } else if (ghost_direction == LEFT) {
-            ghost_direction = UP;
-        }
-
-        // aaaaaaaaaaAAAaaAAAaAAAaaAAAAAA
-        // if (ghost_direction == UP || ghost_direction == DOWN) {
-        //     Game::tile tile_right = Game::maze_running[i+1][j];
-        //     Game::tile tile_left = Game::maze_running[i-1][j];
-        //     if (tile_right != 0) {  // Try to go RIGHT
-        //         ghost_direction = RIGHT;
-        //     } else if (tile_left != 0) {  // Try to go LEFT
-        //         ghost_direction = LEFT;
-        //     }
-        // } else if (ghost_direction == RIGHT || ghost_direction == LEFT) {
-        //     Game::tile tile_up = Game::maze_running[i][j-1];
-        //     Game::tile tile_down = Game::maze_running[i][j+1];
-        //     if (tile_down != 0) {  // Try to go DOWN
-        //         ghost_direction = DOWN;
-        //     } else if (tile_up != 0) {  // Try to go UP
-        //         ghost_direction = UP;
-        //     }
-        // }
-
+        
         // Randomized change to ghost_direction
-        // std::random_device seed;
-        // std::mt19937 gen{seed()}; // seed the generator
-        // std::uniform_int_distribution dist{0, 3}; // set min and max
-        // ghost_direction = dist(gen);
+        std::random_device seed;
+        std::mt19937 gen{seed()}; // seed the generator
+        std::uniform_int_distribution dist{0, 3}; // set min and max
+        ghost_direction = static_cast<directions>(dist(gen));
     } else {
+        if (tile_ghost == 2) {
+            if (x_ghost < 16) {
+                x_ghost = 432;
+            } else if (x_ghost > 432) {
+                x_ghost = 16;
+            }
+        }
         x_antigo = x_ghost;
         y_antigo = y_ghost;
         if (ghost_direction == UP) {

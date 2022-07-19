@@ -36,17 +36,7 @@ void Pacman::pacman_run() {
 
 
     while(Game::_window->isOpen()){
-
-        //printf("EU ENTREI NO PACMANNN\n");
-        //sleep(2);
-        //printf("%d\n",x_pacman);
-        //Game::tile tile_pac;
-        //tile_pac = Game::get_tile(x_pacman,y_pacman);
-
         move();
-        //[23][13]
-
-
         
         contador_princ++;
         if (contador_princ % 5 == 0){
@@ -56,8 +46,6 @@ void Pacman::pacman_run() {
     }
 
     pacman_thread->thread_exit(4);
-
-
 
 }
 
@@ -69,10 +57,17 @@ void Pacman::move() {
     // printf("I = %d\n",i);
     // printf("J = %d\n",j);
 
-    if (tile_pac == 0) {
+    if (tile_pac == 0 || tile_pac == 1) {
         y_pacman = y_antigo;
         x_pacman = x_antigo;
     } else {
+        if (tile_pac == 2) {
+            if (x_pacman < 16) {
+                x_pacman = 432;
+            } else if (x_pacman > 432) {
+                x_pacman = 16;
+            }
+        }
         x_antigo = x_pacman;
         y_antigo = y_pacman;
         if (pac_directions == UP) {
