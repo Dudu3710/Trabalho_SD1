@@ -28,21 +28,16 @@ Draw::Draw() {
 
 void Draw::draw_run(){
     while(Game::_window->isOpen()){
-        //printf("ENTREI DRAW\n");
-        //sleep(2);
         Game::_window->clear();
         Game::_window->draw(maze_sprites);
 
         draw_pacman();
         draw_ghosts();
-        //pac_0_sprites.setPosition(Pacman::x_pacman, Pacman::y_pacman);
-        //Game::_window->draw(pac_0_sprites);
 
         read_maze_and_draw();
         Game::maze_running;
 
         Game::_window->display();
-        //printf("SAI DO DEAW");
         _draw->yield();
     }
     _draw->thread_exit(7);
@@ -51,14 +46,10 @@ void Draw::draw_run(){
 void Draw::read_maze_and_draw() {
     for (int i = 0 ; i < 31; i++) {
         for (int j = 0; j < 28 ; j++) {
-            if (Game::maze_running[i][j] == W) {
-                
-            } 
-            if (Game::maze_running[i][j] == O) {
+            if (Game::maze_running[i][j] == 6) {
                 bigpill_sprites.setPosition(j*16,i*16);
                 Game::_window->draw(bigpill_sprites);
-            }
-            if (Game::maze_running[i][j] == o) {
+            } else if (Game::maze_running[i][j] == 4) {
                 pill_sprites.setPosition(j*16,i*16);
                 Game::_window->draw(pill_sprites);
             }
@@ -99,7 +90,6 @@ void Draw::draw_ghosts() {
 void Draw::load_and_bind_textures()
 {
     // Bind map textures    
-    
     maze_tex.loadFromFile("sprites/maze/maze.png");
     maze_sprites.setTexture(maze_tex);
     maze_sprites.scale(2, 2);

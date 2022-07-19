@@ -186,26 +186,8 @@ private:
     sf::Texture strawberry_tex;
     sf::Sprite strawberry_sprite;
 
-
-
-
-
-
-
-
-
 };
 
-
-
-
 __END_API
-
-
-
-
-
-
-
 
 #endif
